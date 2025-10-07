@@ -5,11 +5,11 @@ import { ThemeProvider } from "@/components/theme-provider";
 
 export const metadata: Metadata = {
   title: {
-    default: "Lumos - Your online learning platform",
-    template: "%S - Lumos",
+    default: "Lumose - Your online learning platform",
+    template: "%S - Lumose",
   },
   description:
-    "Lumos - Your online learning platform for growth and skill development.",
+    "Lumose - Your online learning platform for growth and skill development.",
 };
 
 export default function RootLayout({
