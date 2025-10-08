@@ -6,7 +6,7 @@ import { ThemeProvider } from "@/components/theme-provider";
 export const metadata: Metadata = {
   title: {
     default: "Lumose - Your online learning platform",
-    template: "%S - Lumose",
+    template: "%s - Lumose",
   },
   description:
     "Lumose - Your online learning platform for growth and skill development.",
