@@ -27,13 +27,15 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { toast } from "sonner";
 
 export default function SignInForm() {
   const [isLoading, setIsLoading] = useState(false);
   const [loadingText, setLoadingText] = useState("Please Wait...");
 
+  const params = useSearchParams();
+  const redirect = params.get("redirect");
   const router = useRouter();
 
   const form = useForm<SignInValues>({
@@ -47,7 +49,7 @@ export default function SignInForm() {
     setIsLoading(true);
     const { error } = await authClient.signIn.social({
       provider,
-      callbackURL: "/",
+      callbackURL: redirect ?? "/",
     });
     if (error) {
       console.error(error);
@@ -68,7 +70,12 @@ export default function SignInForm() {
       toast.error(error.message || "Faild to Send Email");
       console.error(error);
     } else {
-      router.push(`/verify-email?email=${email}`);
+      const newSearchParams = new URLSearchParams(params);
+      newSearchParams.set("email", email);
+      if (redirect) {
+        newSearchParams.set("redirect", redirect);
+      }
+      router.push(`/verify-request?${newSearchParams.toString()}`);
       form.reset();
     }
 

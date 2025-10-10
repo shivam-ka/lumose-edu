@@ -4,6 +4,7 @@ import prisma from "./prisma";
 import { env } from "@/env";
 import { emailOTP } from "better-auth/plugins";
 import { sendEmail } from "./email";
+import { toast } from "sonner";
 
 export const auth = betterAuth({
   database: prismaAdapter(prisma, {
@@ -18,11 +19,14 @@ export const auth = betterAuth({
   plugins: [
     emailOTP({
       async sendVerificationOTP({ email, otp }) {
-        await sendEmail({
+        const { error } = await sendEmail({
           email,
           subject: "Email Verification",
           text: `Your Otp is ${otp}`,
         });
+        if (error) {
+          toast.error(error.message || "faild to send otp");
+        }
       },
     }),
   ],
