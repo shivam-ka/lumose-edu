@@ -81,7 +81,7 @@ export default function VerifyRequestForm() {
               {[0, 1, 2, 3, 4, 5].map((item) => (
                 <InputOTPGroup key={item} className="mx-auto">
                   <InputOTPSlot
-                    className="h-11 w-11 text-xl sm:h-12 sm:w-12"
+                    className="h-10 w-10 text-xl sm:h-12 sm:w-12"
                     index={item}
                   />
                 </InputOTPGroup>
