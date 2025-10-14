@@ -4,6 +4,7 @@ import { fontVariables } from "@/config/fonts";
 import { ThemeProvider } from "@/components/theme-provider";
 import { Toaster } from "@/components/ui/sonner";
 import { appName } from "@/constant/app";
+import TopLoader from "@/components/top-loader";
 
 export const metadata: Metadata = {
   title: {
@@ -22,6 +23,7 @@ export default function RootLayout({
     <html lang="en" suppressHydrationWarning>
       <body className={`${fontVariables} antialiased`}>
         <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
+          <TopLoader />
           {children}
           <Toaster position="top-right" />
         </ThemeProvider>
