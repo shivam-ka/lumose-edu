@@ -4,6 +4,7 @@ import Link from "next/link";
 import UserDropdown from "./user-dropdown";
 import { getServerSession } from "@/lib/get-sesstion";
 import { Button } from "@/components/ui/button";
+import { appName } from "@/constant/app";
 
 export default async function Navbar() {
   const session = await getServerSession();
@@ -20,7 +21,7 @@ export default async function Navbar() {
           alt="logo"
           draggable={false}
         />
-        <h1 className="hidden sm:block sm:text-xl lg:text-2xl">Lumose</h1>
+        <h1 className="hidden sm:block sm:text-xl lg:text-2xl">{appName}</h1>
       </Link>
 
       <div className="flex items-center gap-3">

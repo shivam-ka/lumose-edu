@@ -3,14 +3,14 @@ import "./globals.css";
 import { fontVariables } from "@/config/fonts";
 import { ThemeProvider } from "@/components/theme-provider";
 import { Toaster } from "@/components/ui/sonner";
+import { appName } from "@/constant/app";
 
 export const metadata: Metadata = {
   title: {
-    default: "Lumose - Your online learning platform",
-    template: "%s - Lumose",
+    default: `${appName} - Your online learning platform`,
+    template: `%s - ${appName}`,
   },
-  description:
-    "Lumose - Your online learning platform for growth and skill development.",
+  description: `${appName} - Your online learning platform for growth and skill development.`,
 };
 
 export default function RootLayout({

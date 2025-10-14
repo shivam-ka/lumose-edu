@@ -1,16 +1,9 @@
 "use client";
 
+import { SignOutConfirm } from "@/components/sign-out-confirm";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
-import {
-  Dialog,
-  DialogClose,
-  DialogContent,
-  DialogDescription,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
-} from "@/components/ui/dialog";
+
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -20,13 +13,10 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { authClient } from "@/lib/auth-client";
 import { User } from "better-auth";
 
 import {
   LogOutIcon,
-  CircleUserIcon,
-  Loader,
   Home,
   BookOpen,
   LayoutDashboard,
@@ -34,7 +24,6 @@ import {
 } from "lucide-react";
 import Link from "next/link";
 import { useState } from "react";
-import { toast } from "sonner";
 
 interface UserDropdownProps {
   user: User;
@@ -73,17 +62,22 @@ export default function UserDropdown({ user }: UserDropdownProps) {
         <DropdownMenuTrigger asChild>
           <Button
             variant="ghost"
-            className="text-foreground gap-1 border px-2 focus-visible:ring-0"
+            className="text-muted-foreground gap-1 border px-2 capitalize focus-visible:ring-0"
           >
-            {user.image ? (
-              <Avatar>
+            <Avatar className="size-7">
+              {user.image ? (
                 <AvatarImage src={user.image} alt="Profile image" />
-                <AvatarFallback>{user.name[0]}</AvatarFallback>
-              </Avatar>
-            ) : (
-              <CircleUserIcon />
-            )}
-            Profile
+              ) : (
+                <AvatarFallback className="capitalize">
+                  {user.name[0] || user.email[0]}
+                </AvatarFallback>
+              )}
+            </Avatar>
+            <p>
+              {user.name && user.name.length > 0
+                ? user.name.split(" ")[0]
+                : user.email.split("@")[0]}
+            </p>
           </Button>
         </DropdownMenuTrigger>
 
@@ -119,63 +113,5 @@ export default function UserDropdown({ user }: UserDropdownProps) {
       </DropdownMenu>
       <SignOutConfirm open={isOpen} onOpenChange={setIsOpen} />
     </>
-  );
-}
-
-interface SignOutConfirmProps {
-  open: boolean;
-  onOpenChange: (open: boolean) => void;
-}
-
-function SignOutConfirm({ open, onOpenChange }: SignOutConfirmProps) {
-  const [isLoading, setIsLoading] = useState(false);
-
-  async function signOut() {
-    setIsLoading(true);
-    const { error } = await authClient.signOut();
-
-    if (error) {
-      toast.error(error.message || "Something went wrong");
-    } else {
-      window.location.href = "/sign-in";
-    }
-    setIsLoading(false);
-  }
-
-  return (
-    <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent>
-        <DialogHeader>
-          <DialogTitle>Are you sure you want to logout?</DialogTitle>
-          <DialogDescription>
-            {`You'll need to sign in again to access your account.`}
-          </DialogDescription>
-        </DialogHeader>
-        <DialogFooter>
-          <DialogClose asChild>
-            <Button variant="outline" disabled={isLoading}>
-              Cancel
-            </Button>
-          </DialogClose>
-          <Button
-            disabled={isLoading}
-            className="dark:bg-red-800"
-            variant="destructive"
-            onClick={() => {
-              signOut();
-            }}
-          >
-            {isLoading ? (
-              <>
-                <Loader className="animate-spin" />
-                Loading...
-              </>
-            ) : (
-              "Logout"
-            )}
-          </Button>
-        </DialogFooter>
-      </DialogContent>
-    </Dialog>
   );
 }
