@@ -1,6 +1,7 @@
 import { Separator } from "@/components/ui/separator";
 import { SidebarTrigger } from "@/components/ui/sidebar";
 import { ThemeToggleButton } from "./theme-toggle-button";
+import { appName } from "@/constant/app";
 
 export function SiteHeader() {
   return (
@@ -11,7 +12,7 @@ export function SiteHeader() {
           orientation="vertical"
           className="mx-2 data-[orientation=vertical]:h-4"
         />
-        <h1 className="text-base font-medium">Documents</h1>
+        <h1 className="text-base font-medium">{appName}</h1>
         <div className="ml-auto flex items-center gap-2">
           <ThemeToggleButton
             className="size-7"

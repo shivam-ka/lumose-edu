@@ -1,6 +1,9 @@
 "use client";
 
-import { IconCirclePlusFilled, type Icon } from "@tabler/icons-react";
+import {
+  IconLibraryPlus,
+  type Icon,
+} from "@tabler/icons-react";
 import {
   SidebarGroup,
   SidebarGroupContent,
@@ -26,12 +29,12 @@ export function NavMain({
           <SidebarMenuItem className="flex items-center gap-2">
             <SidebarMenuButton
               tooltip="Quick Create"
-              className="bg-primary text-primary-foreground hover:bg-primary/90 hover:text-primary-foreground active:bg-primary/90 active:text-primary-foreground min-w-8 justify-between duration-200 ease-linear"
+              className="bg-primary text-primary-foreground hover:bg-primary/90 hover:text-primary-foreground active:bg-primary/90 active:text-primary-foreground min-w-8 duration-200 ease-linear"
               asChild
             >
               <Link href="/admin/coures/create">
+                <IconLibraryPlus className="mt-0.5" />
                 <span>Create New Couese</span>
-                <IconCirclePlusFilled className="mt-0.5" />
               </Link>
             </SidebarMenuButton>
           </SidebarMenuItem>
