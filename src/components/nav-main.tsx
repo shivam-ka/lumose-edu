@@ -1,9 +1,6 @@
 "use client";
 
-import {
-  IconLibraryPlus,
-  type Icon,
-} from "@tabler/icons-react";
+import { IconLibraryPlus, type Icon } from "@tabler/icons-react";
 import {
   SidebarGroup,
   SidebarGroupContent,
@@ -32,7 +29,7 @@ export function NavMain({
               className="bg-primary text-primary-foreground hover:bg-primary/90 hover:text-primary-foreground active:bg-primary/90 active:text-primary-foreground min-w-8 duration-200 ease-linear"
               asChild
             >
-              <Link href="/admin/coures/create">
+              <Link href="/admin/courses/create">
                 <IconLibraryPlus className="mt-0.5" />
                 <span>Create New Couese</span>
               </Link>
