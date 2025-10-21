@@ -2,14 +2,13 @@ import { Button } from "@/components/ui/button";
 import { IconArrowNarrowLeftDashed } from "@tabler/icons-react";
 import { Metadata } from "next";
 import Link from "next/link";
-import CourseForm from "./courseForm";
+import CourseForm from "./CourseForm";
 
 export const metadata: Metadata = {
   title: "Create New Course",
 };
 
 export default function Page() {
-
   return (
     <>
       <div className="flex items-center gap-4 pb-4">

@@ -1,5 +1,6 @@
 "use client";
 
+import { RichTextEditor } from "@/components/rich-text-editor/Editor";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -88,7 +89,7 @@ export default function CourseForm() {
                   <FormItem className="flex-1">
                     <FormLabel>URL Slug</FormLabel>
 
-                    <div className="flex flex-col md:flex-row items-center gap-3">
+                    <div className="flex flex-col items-center gap-3 md:flex-row">
                       <FormControl>
                         <Input placeholder="course-url-slug" {...field} />
                       </FormControl>
@@ -142,11 +143,7 @@ export default function CourseForm() {
                   <FormItem>
                     <FormLabel>Full Description</FormLabel>
                     <FormControl>
-                      <Textarea
-                        placeholder="Enter detailed course description (at least 10 characters)"
-                        className="min-h-32"
-                        {...field}
-                      />
+                      <RichTextEditor field={field} />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -246,7 +243,9 @@ export default function CourseForm() {
                           placeholder="Enter course duration in hours"
                           {...field}
                           type="number"
-                          onChange={(e) => field.onChange(Number(e.target.value))}
+                          onChange={(e) =>
+                            field.onChange(Number(e.target.value))
+                          }
                           max={500}
                         />
                       </FormControl>
@@ -266,7 +265,9 @@ export default function CourseForm() {
                           placeholder="Enter course price"
                           {...field}
                           type="number"
-                          onChange={(e) => field.onChange(Number(e.target.value))}
+                          onChange={(e) =>
+                            field.onChange(Number(e.target.value))
+                          }
                           min={0}
                         />
                       </FormControl>
