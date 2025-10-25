@@ -36,7 +36,7 @@ export default async function Navbar() {
         <ThemeToggleButton
           className="size-7"
           variant="rectangle"
-          start="bottom-center"
+          start="top-right"
         />
       </div>
     </header>

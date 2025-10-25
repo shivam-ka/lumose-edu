@@ -469,13 +469,12 @@ export const useThemeToggle = ({
 
   const styleId = "theme-transition-styles";
 
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const updateStyles = useCallback((css: string, name: string) => {
     if (typeof window === "undefined") return;
 
     let styleElement = document.getElementById(styleId) as HTMLStyleElement;
 
-    console.log("style ELement", styleElement);
-    console.log("name", name);
 
     if (!styleElement) {
       styleElement = document.createElement("style");
@@ -485,7 +484,6 @@ export const useThemeToggle = ({
 
     styleElement.textContent = css;
 
-    console.log("content updated");
   }, []);
 
   const toggleTheme = useCallback(() => {
