@@ -1,15 +1,51 @@
 "use client";
 
-import React, { useCallback } from "react";
+import React, { useCallback, useState } from "react";
 import { FileRejection, useDropzone } from "react-dropzone";
 import { Card, CardContent } from "../ui/card";
 import { cn } from "@/lib/utils";
-import { ImageUpIcon, UploadCloudIcon } from "lucide-react";
 import { toast } from "sonner";
+import { v4 as uuidv4 } from "uuid";
+import { RenderEmptyState } from "./RenderState";
+
+interface UploaderState {
+  id: string | null;
+  file: File | null;
+  fileType: "image" | "video";
+  objectUrl?: string;
+  uploading: boolean;
+  isDeleting: boolean;
+  progress: number;
+  key?: string;
+  error: boolean;
+}
 
 export function Uploader() {
+  const [fileState, setFileState] = useState<UploaderState>({
+    id: null,
+    file: null,
+    fileType: "image",
+    uploading: false,
+    isDeleting: false,
+    progress: 0,
+    error: false,
+  });
+
   const onDrop = useCallback((acceptedFiles: File[]) => {
-    console.log(acceptedFiles);
+    if (acceptedFiles.length > 0) {
+      const file = acceptedFiles[0];
+
+      setFileState({
+        id: uuidv4(),
+        file: file,
+        fileType: "image",
+        uploading: false,
+        isDeleting: false,
+        progress: 0,
+        objectUrl: URL.createObjectURL(file),
+        error: false,
+      });
+    }
   }, []);
 
   function rejectedFile(fileRejection: FileRejection[]) {
@@ -41,6 +77,22 @@ export function Uploader() {
     onDropRejected: rejectedFile,
   });
 
+  function renderContent() {
+    if (fileState.uploading) {
+      return <h1>uploading...</h1>;
+    }
+
+    if (fileState.error) {
+      return <h1>error</h1>;
+    }
+
+    if (fileState.objectUrl) {
+      return <h1>object url</h1>;
+    }
+
+    return <RenderEmptyState isDragActive={isDragActive} />;
+  }
+
   return (
     <Card
       {...getRootProps()}
@@ -53,32 +105,7 @@ export function Uploader() {
     >
       <input {...getInputProps()} />
       <CardContent className="flex h-full flex-col items-center justify-center gap-4 p-6 text-center">
-        {isDragActive ? (
-          <>
-            <UploadCloudIcon className="text-primary h-12 w-12 animate-pulse" />
-            <div className="space-y-2">
-              <p className="text-primary text-lg font-medium">
-                Drop the files here...
-              </p>
-              <p className="text-muted-foreground text-sm">
-                Release to upload your files
-              </p>
-            </div>
-          </>
-        ) : (
-          <>
-            <ImageUpIcon className="text-muted-foreground h-12 w-12" />
-            <div className="space-y-2">
-              <p className="text-lg font-medium">Drag & drop files here</p>
-              <p className="text-muted-foreground text-sm">
-                or click to select files
-              </p>
-            </div>
-            <p className="text-muted-foreground mt-2 text-xs">
-              Supports: PDF, JPG, PNG, DOC (Max: 10MB)
-            </p>
-          </>
-        )}
+        {renderContent()}
       </CardContent>
     </Card>
   );
