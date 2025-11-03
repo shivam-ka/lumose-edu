@@ -1,12 +1,16 @@
 "use client";
 
-import React, { useCallback, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { FileRejection, useDropzone } from "react-dropzone";
 import { Card, CardContent } from "../ui/card";
 import { cn } from "@/lib/utils";
 import { toast } from "sonner";
 import { v4 as uuidv4 } from "uuid";
-import { RenderEmptyState } from "./RenderState";
+import {
+  RenderEmptyState,
+  RenderUploadingState,
+  RenderUploadState,
+} from "./RenderState";
 
 interface UploaderState {
   id: string | null;
@@ -31,22 +35,116 @@ export function Uploader() {
     error: false,
   });
 
-  const onDrop = useCallback((acceptedFiles: File[]) => {
-    if (acceptedFiles.length > 0) {
-      const file = acceptedFiles[0];
+  async function uploadFile(file: File) {
+    setFileState((prev) => ({
+      ...prev,
+      uploading: true,
+      progress: 0,
+      error: false,
+    }));
 
-      setFileState({
-        id: uuidv4(),
-        file: file,
-        fileType: "image",
-        uploading: false,
-        isDeleting: false,
-        progress: 0,
-        objectUrl: URL.createObjectURL(file),
-        error: false,
+    try {
+      const presignedResponse = await fetch("/api/s3/upload", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          fileName: file.name,
+          contentType: file.type,
+          size: file.size,
+          isImage: true,
+        }),
       });
+
+      if (!presignedResponse.ok) {
+        toast.error("Failed to prepare upload. Please try again");
+        setFileState((prev) => ({
+          ...prev,
+          uploading: false,
+          progress: 0,
+          error: true,
+        }));
+        return;
+      }
+
+      const { presignedUrl, key } = await presignedResponse.json();
+
+      await new Promise<void>((resolve, reject) => {
+        const xhr = new XMLHttpRequest();
+
+        xhr.upload.onprogress = (event) => {
+          if (event.lengthComputable) {
+            const percentageCompleted = (event.loaded / event.total) * 100;
+
+            setFileState((prev) => ({
+              ...prev,
+              uploading: true,
+              progress: Math.round(percentageCompleted),
+              error: false,
+            }));
+          }
+        };
+
+        xhr.onload = () => {
+          if (xhr.status === 200 || xhr.status === 204) {
+            setFileState((prev) => ({
+              ...prev,
+              uploading: false,
+              progress: 100,
+              key: key,
+            }));
+
+            toast.error("uploaded successfully");
+            resolve();
+          } else {
+            reject(new Error("Upload failed"));
+          }
+        };
+
+        xhr.onerror = () => {
+          reject(new Error("Upload failed"));
+        };
+
+        xhr.open("PUT", presignedUrl);
+        xhr.setRequestHeader("Content-Type", file.type);
+        xhr.send(file);
+      });
+    } catch (error) {
+      console.error(error);
+      toast.error("Something went wrong");
+      setFileState((prev) => ({
+        ...prev,
+        uploading: false,
+        error: true,
+        progress: 0,
+      }));
     }
-  }, []);
+  }
+
+  const onDrop = useCallback(
+    (acceptedFiles: File[]) => {
+      if (acceptedFiles.length > 0) {
+        const file = acceptedFiles[0];
+
+        if (fileState.objectUrl && !fileState.objectUrl.startsWith("http")) {
+          URL.revokeObjectURL(fileState.objectUrl);
+        }
+
+        setFileState({
+          id: uuidv4(),
+          file: file,
+          fileType: "image",
+          uploading: false,
+          isDeleting: false,
+          progress: 0,
+          objectUrl: URL.createObjectURL(file),
+          error: false,
+        });
+
+        uploadFile(file);
+      }
+    },
+    [fileState.objectUrl],
+  );
 
   function rejectedFile(fileRejection: FileRejection[]) {
     if (fileRejection.length) {
@@ -68,6 +166,14 @@ export function Uploader() {
     }
   }
 
+  useEffect(() => {
+    return () => {
+      if (fileState.objectUrl && !fileState.objectUrl.startsWith("http")) {
+        URL.revokeObjectURL(fileState.objectUrl);
+      }
+    };
+  }, [fileState.objectUrl]);
+
   const { getRootProps, getInputProps, isDragActive } = useDropzone({
     onDrop,
     accept: { "image/*": [] },
@@ -79,7 +185,12 @@ export function Uploader() {
 
   function renderContent() {
     if (fileState.uploading) {
-      return <h1>uploading...</h1>;
+      return (
+        <RenderUploadingState
+          progress={fileState.progress}
+          file={fileState.file as File}
+        />
+      );
     }
 
     if (fileState.error) {
@@ -87,7 +198,7 @@ export function Uploader() {
     }
 
     if (fileState.objectUrl) {
-      return <h1>object url</h1>;
+      return <RenderUploadState previewUrl={fileState.objectUrl} />;
     }
 
     return <RenderEmptyState isDragActive={isDragActive} />;

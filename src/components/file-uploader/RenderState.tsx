@@ -1,4 +1,6 @@
-import { ImageUpIcon, UploadCloudIcon } from "lucide-react";
+import { ImageUpIcon, Trash2, UploadCloudIcon } from "lucide-react";
+import Image from "next/image";
+import { Button } from "../ui/button";
 
 export function RenderEmptyState({ isDragActive }: { isDragActive: boolean }) {
   if (isDragActive) {
@@ -29,5 +31,41 @@ export function RenderEmptyState({ isDragActive }: { isDragActive: boolean }) {
         Supports: PDF, JPG, PNG, DOC (Max: 10MB)
       </p>
     </>
+  );
+}
+
+export function RenderUploadState({ previewUrl }: { previewUrl: string }) {
+  return (
+    <div>
+      <Image
+        alt="uploaded file"
+        fill
+        src={previewUrl}
+        className="object-contain p-2"
+      />
+
+      <Button
+        variant="destructive"
+        size="icon-sm"
+        className="absolute top-4 right-4 z-10 dark:bg-red-500"
+      >
+        <Trash2 />
+      </Button>
+    </div>
+  );
+}
+
+export function RenderUploadingState({
+  progress,
+  file,
+}: {
+  progress: number;
+  file: File;
+}) {
+  return (
+    <div>
+      <p>{progress}</p>
+      <p>{file.name}</p>
+    </div>
   );
 }
