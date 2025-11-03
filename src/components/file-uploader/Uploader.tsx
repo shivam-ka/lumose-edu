@@ -8,6 +8,7 @@ import { toast } from "sonner";
 import { v4 as uuidv4 } from "uuid";
 import {
   RenderEmptyState,
+  RenderErrorState,
   RenderUploadingState,
   RenderUploadState,
 } from "./RenderState";
@@ -34,6 +35,19 @@ export function Uploader() {
     progress: 0,
     error: false,
   });
+
+  function setFileStateToDefault() {
+    setFileState({
+      file: null,
+      uploading: false,
+      progress: 0,
+      objectUrl: undefined,
+      error: false,
+      fileType: "image",
+      id: null,
+      isDeleting: false,
+    });
+  }
 
   async function uploadFile(file: File) {
     setFileState((prev) => ({
@@ -146,6 +160,62 @@ export function Uploader() {
     [fileState.objectUrl],
   );
 
+  async function handleRemoveFile() {
+    if (fileState.isDeleting || !fileState.objectUrl) return;
+
+    try {
+      setFileState((prev) => ({
+        ...prev,
+        isDeleting: true,
+      }));
+
+      const response = await fetch("/api/s3/delete", {
+        method: "DELETE",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          key: fileState.key,
+        }),
+      });
+
+      if (!response.ok) {
+        toast.error("Faild to delete file");
+        setFileState((prev) => ({
+          ...prev,
+          isDeleting: false,
+          error: true,
+        }));
+
+        return;
+      }
+
+      if (fileState.objectUrl && !fileState.objectUrl.startsWith("http")) {
+        URL.revokeObjectURL(fileState.objectUrl);
+      }
+
+      setFileState({
+        file: null,
+        uploading: false,
+        progress: 0,
+        objectUrl: undefined,
+        error: false,
+        fileType: "image",
+        id: null,
+        isDeleting: false,
+      });
+
+      toast.success("File Removed Successfully");
+    } catch (error) {
+      console.error(error);
+      toast.error("Error removing file.");
+
+      setFileState((prev) => ({
+        ...prev,
+        error: true,
+        isDeleting: false,
+      }));
+    }
+  }
+
   function rejectedFile(fileRejection: FileRejection[]) {
     if (fileRejection.length) {
       const tooManyFiles = fileRejection.find(
@@ -181,6 +251,8 @@ export function Uploader() {
     multiple: false,
     maxSize: 5 * 1024 * 1024,
     onDropRejected: rejectedFile,
+    disabled:
+      fileState.uploading || fileState.isDeleting || !!fileState.objectUrl,
   });
 
   function renderContent() {
@@ -194,11 +266,22 @@ export function Uploader() {
     }
 
     if (fileState.error) {
-      return <h1>error</h1>;
+      return (
+        <RenderErrorState
+          fileName={fileState.file?.name as string}
+          setFileStateToDefault={setFileStateToDefault}
+        />
+      );
     }
 
     if (fileState.objectUrl) {
-      return <RenderUploadState previewUrl={fileState.objectUrl} />;
+      return (
+        <RenderUploadState
+          previewUrl={fileState.objectUrl}
+          isDeleting={fileState.isDeleting}
+          handleRemoveFile={handleRemoveFile}
+        />
+      );
     }
 
     return <RenderEmptyState isDragActive={isDragActive} />;
@@ -208,10 +291,11 @@ export function Uploader() {
     <Card
       {...getRootProps()}
       className={cn(
-        "relative h-64 w-full cursor-pointer border-2 border-dashed transition-colors duration-200",
+        "relative h-64 w-full border-2 border-dashed transition-colors duration-200",
         isDragActive
           ? "border-primary bg-primary/5"
-          : "border-border hover:border-primary/50",
+          : !fileState.error &&
+              "border-border hover:border-primary/50 cursor-pointer",
       )}
     >
       <input {...getInputProps()} />

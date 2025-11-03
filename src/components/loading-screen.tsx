@@ -12,11 +12,14 @@ export default function LoadingScreen({
   loading,
   text = "Loading...",
 }: LoadingScreenProps) {
-  if (!loading) return;
+  if (!loading) return null;
+
   return (
-    <div className="fixed top-0 right-0 flex h-screen w-screen items-center justify-center">
-      <Card className="flex items-center gap-5 rounded-md py-4 pr-12 pl-7">
-        <CardContent className="flex items-center gap-2 p-0">
+    <div
+      className="bg-background/10 fixed inset-0 z-50 flex items-center justify-center"
+    >
+      <Card className="flex items-center gap-5 rounded-md py-4 pr-12 pl-7 shadow-lg">
+        <CardContent className="flex items-center gap-5 p-0">
           <motion.svg
             viewBox="25 25 50 50"
             className="text-primary h-7 w-7"
