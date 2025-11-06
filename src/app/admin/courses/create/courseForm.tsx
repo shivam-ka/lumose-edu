@@ -27,6 +27,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
+import { tryCatch } from "@/hooks/try-catch";
 import {
   courseCategories,
   courseLevels,
@@ -36,11 +37,18 @@ import {
 } from "@/lib/validation";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { ArrowRight, SparklesIcon } from "lucide-react";
+import { useTransition } from "react";
 import { useForm } from "react-hook-form";
 import slugify from "slugify";
 import { toast } from "sonner";
+import { CreateCourse } from "./actions";
+import { useRouter } from "next/navigation";
+import LoadingScreen from "@/components/loading-screen";
 
 export default function CourseForm() {
+  const [isPending, startTransition] = useTransition();
+  const router = useRouter();
+
   const form = useForm<CourseSchemaType>({
     resolver: zodResolver(courseSchema),
     defaultValues: {
@@ -57,7 +65,24 @@ export default function CourseForm() {
     },
   });
 
-  function onSubmit() {}
+  function onSubmit(values: CourseSchemaType) {
+    startTransition(async () => {
+      const { data: response, error } = await tryCatch(CreateCourse(values));
+
+      if (error) {
+        toast.error("An Unexpected Error");
+        return;
+      }
+
+      if (response.status === "success") {
+        toast.success(response.message);
+        form.reset();
+        router.push("/admin/courses");
+      } else if (response.status === "error") {
+        toast.error(response.message);
+      }
+    });
+  }
 
   return (
     <>
@@ -158,7 +183,7 @@ export default function CourseForm() {
                   <FormItem>
                     <FormLabel>Upload Thumbnail</FormLabel>
                     <FormControl>
-                      <Uploader />
+                      <Uploader value={field.value} onChange={field.onChange} />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -312,6 +337,7 @@ export default function CourseForm() {
                   type="submit"
                   className="w-full rounded-sm md:w-fit"
                   size="lg"
+                  disabled={isPending}
                 >
                   Create Course
                   <ArrowRight className="mt-0.5" />
@@ -321,6 +347,7 @@ export default function CourseForm() {
           </Form>
         </CardContent>
       </Card>
+      <LoadingScreen loading={isPending} text="Creating..." />
     </>
   );
 }
