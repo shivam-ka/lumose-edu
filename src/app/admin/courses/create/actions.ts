@@ -1,6 +1,6 @@
 "use server";
 
-import { getServerSession } from "@/lib/get-sesstion";
+import { requireAdmin } from "@/app/data/admin/require-admin";
 import prisma from "@/lib/prisma";
 import { ApiResponse } from "@/lib/types";
 import { courseSchema, CourseSchemaType } from "@/lib/validation";
@@ -9,7 +9,7 @@ export async function CreateCourse(
   data: CourseSchemaType,
 ): Promise<ApiResponse> {
   try {
-    const sesstion = await getServerSession();
+    const sesstion = await requireAdmin();
     const user = sesstion?.user;
 
     if (!user) {

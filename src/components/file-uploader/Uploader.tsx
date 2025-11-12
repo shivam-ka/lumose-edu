@@ -77,7 +77,11 @@ export function Uploader({ value, onChange }: IAppProps) {
         });
 
         if (!presignedResponse.ok) {
-          toast.error("Failed to prepare upload. Please try again");
+          toast.error(
+            presignedResponse.status === 403
+              ? "Forbidden: Access denied"
+              : "Failed to prepare upload. Please try again",
+          );
           setFileState((prev) => ({
             ...prev,
             uploading: false,

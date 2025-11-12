@@ -1,9 +1,18 @@
+import { requireAdmin } from "@/app/data/admin/require-admin";
 import { env } from "@/env";
 import { S3 } from "@/lib/S3Client";
 import { DeleteObjectCommand } from "@aws-sdk/client-s3";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function DELETE(request: NextRequest) {
+  const session = await requireAdmin();
+  if (!session) {
+    return NextResponse.json(
+      { error: "Forbidden: Access denied" },
+      { status: 403 },
+    );
+  }
+
   try {
     const { key } = await request.json();
 
