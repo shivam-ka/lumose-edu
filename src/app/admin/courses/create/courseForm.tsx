@@ -130,7 +130,7 @@ export default function CourseForm() {
                               "Enter a title to generate a slug",
                             );
                           }
-                          const slug = slugify(titleValue);
+                          const slug = slugify(titleValue).toLocaleLowerCase();
                           form.setValue("slug", slug, { shouldValidate: true });
                         }}
                       >

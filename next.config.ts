@@ -13,6 +13,10 @@ const nextConfig: NextConfig = {
         protocol: "https",
         hostname: "lh3.googleusercontent.com",
       },
+      {
+        hostname: "lumose-education.fly.storage.tigris.dev",
+        protocol: "https",
+      }
     ],
   },
 };
