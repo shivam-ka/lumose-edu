@@ -9,6 +9,7 @@ import {
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { notFound } from "next/navigation";
 import { EditCourseForm } from "./_components/EditCourseForm";
+import { CourseStructure } from "./_components/CourseStructure";
 
 type Params = Promise<{ courseId: string }>;
 
@@ -27,7 +28,7 @@ export default async function Page({ params }: { params: Params }) {
           <TabsTrigger value="basic-info" className="cursor-pointer">
             Basic Info
           </TabsTrigger>
-          <TabsTrigger value="Course-structure" className="cursor-pointer">
+          <TabsTrigger value="course-structure" className="cursor-pointer">
             Course Structure
           </TabsTrigger>
         </TabsList>
@@ -39,6 +40,18 @@ export default async function Page({ params }: { params: Params }) {
             </CardHeader>
             <CardContent>
               <EditCourseForm data={data} />
+            </CardContent>
+          </Card>
+        </TabsContent>
+
+        <TabsContent value="course-structure">
+          <Card>
+            <CardHeader>
+              <CardTitle>Course structure</CardTitle>
+              <CardDescription>Update Course Structure</CardDescription>
+            </CardHeader>
+            <CardContent>
+              <CourseStructure data={data} />
             </CardContent>
           </Card>
         </TabsContent>
