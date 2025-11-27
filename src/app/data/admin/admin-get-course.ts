@@ -1,12 +1,10 @@
 import "server-only";
 import { requireAdmin } from "./require-admin";
-import { toast } from "sonner";
 import prisma from "@/lib/prisma";
 
 export async function adminGetCourse(id: string) {
   const sesstion = await requireAdmin();
   if (!sesstion) {
-    toast.error("Forbidden: Access denied");
     return;
   }
 
@@ -39,10 +37,10 @@ export async function adminGetCourse(id: string) {
               thumbnailKey: true,
               position: true,
               videoKey: true,
-            }
+            },
           },
-        }
-      }
+        },
+      },
     },
   });
 
