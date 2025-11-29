@@ -38,7 +38,7 @@ export default async function Page({ params }: { params: Params }) {
               <CardTitle>Basic Info</CardTitle>
               <CardDescription>Provide Basic Info of Course</CardDescription>
             </CardHeader>
-            <CardContent>
+            <CardContent className="px-4 sm:px-6">
               <EditCourseForm data={data} />
             </CardContent>
           </Card>
@@ -50,7 +50,7 @@ export default async function Page({ params }: { params: Params }) {
               <CardTitle>Course structure</CardTitle>
               <CardDescription>Update Course Structure</CardDescription>
             </CardHeader>
-            <CardContent>
+            <CardContent className="px-2 sm:px-6">
               <CourseStructure data={data} />
             </CardContent>
           </Card>

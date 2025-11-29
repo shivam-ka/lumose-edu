@@ -230,7 +230,7 @@ export function CourseStructure({ data }: IAppProps) {
           <CardTitle>Chapters</CardTitle>
         </CardHeader>
 
-        <CardContent>
+        <CardContent className="px-2 sm:px-6">
           <SortableContext items={items} strategy={verticalListSortingStrategy}>
             {items.map((item) => (
               <SortableItem
