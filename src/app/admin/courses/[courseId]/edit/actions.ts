@@ -97,7 +97,61 @@ export async function reorderLessons(
       message: "Lessons reordered successfully",
     };
   } catch (error) {
-    console.error("reorderLessons", error);
+    console.error("reorder Lessons Erros:", error);
+    return {
+      status: "error",
+      message: "Failed to reorder lesson",
+    };
+  }
+}
+
+export async function reorderChapters(
+  courseId: string,
+  chapters: {
+    id: string;
+    position: number;
+  }[],
+): Promise<ApiResponse> {
+  if (!chapters || !chapters.length) {
+    return {
+      status: "error",
+      message: "provide chapters for reordering",
+    };
+  }
+
+  const sesstion = await requireAdmin();
+  const user = sesstion?.user;
+
+  if (!user) {
+    return {
+      status: "error",
+      message: "unauthorized request",
+    };
+  }
+
+  try {
+    const updates = chapters.map((chapter) =>
+      prisma.chapter.update({
+        where: {
+          id: chapter.id,
+          courseId: courseId,
+        },
+        data: {
+          position: chapter.position,
+        },
+      }),
+    );
+
+    await prisma.$transaction(updates);
+
+    revalidatePath(`admin/courses/${courseId}/edit`);
+
+    return {
+      status: "success",
+      message: "Chapter reordered successfully",
+    };
+  } catch (error) {
+    console.error("reorder Chapters Error:", error);
     return {
       status: "error",
       message: "Failed to reorder lesson",

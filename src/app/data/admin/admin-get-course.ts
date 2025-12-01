@@ -43,6 +43,9 @@ export async function adminGetCourse(id: string) {
             },
           },
         },
+        orderBy: {
+          position: "asc",
+        },
       },
     },
   });
