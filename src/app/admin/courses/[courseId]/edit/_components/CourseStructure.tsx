@@ -38,6 +38,7 @@ import {
 import { cn } from "@/lib/utils";
 import { toast } from "sonner";
 import { reorderChapters, reorderLessons } from "../actions";
+import { NewChapterDialog } from "./NewChapterDialog";
 
 interface IAppProps {
   data: AdminSingleCourseType;
@@ -295,6 +296,7 @@ export function CourseStructure({ data }: IAppProps) {
       <Card>
         <CardHeader className="border-border flex flex-row items-center justify-between border-b">
           <CardTitle>Chapters</CardTitle>
+          <NewChapterDialog courseId={data.id} />
         </CardHeader>
 
         <CardContent className="px-2 sm:px-6">

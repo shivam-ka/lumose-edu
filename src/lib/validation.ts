@@ -48,4 +48,10 @@ export const courseSchema = z.object({
   status: z.enum(courseStatus),
 });
 
+export const chapterSchema = z.object({
+  name: requiredString,
+  courseId: z.string().uuid({ message: "invalid course id" }),
+});
+
 export type CourseSchemaType = z.infer<typeof courseSchema>;
+export type ChapterSchemaType = z.infer<typeof chapterSchema>;
