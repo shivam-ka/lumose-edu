@@ -38,6 +38,9 @@ export async function adminGetCourse(id: string) {
               position: true,
               videoKey: true,
             },
+            orderBy: {
+              position: "asc",
+            },
           },
         },
       },

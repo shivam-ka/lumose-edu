@@ -37,6 +37,7 @@ import {
 } from "@dnd-kit/core";
 import { cn } from "@/lib/utils";
 import { toast } from "sonner";
+import { reorderLessons } from "../actions";
 
 interface IAppProps {
   data: AdminSingleCourseType;
@@ -206,9 +207,33 @@ export function CourseStructure({ data }: IAppProps) {
         lesson: updatedLessonForState,
       };
 
-      const previousItem = [...items];
+      const previousItems = [...items];
 
       setItems(newItem);
+
+      if (courseId) {
+        const lessonsToUpdate = updatedLessonForState.map((lesson) => ({
+          id: lesson.id,
+          position: lesson.order,
+        }));
+
+        const reorderedLessonPromise = () =>
+          reorderLessons(chapterId, lessonsToUpdate, courseId);
+
+        toast.promise(reorderedLessonPromise(), {
+          loading: "reordering Lessons...",
+          success: (result) => {
+            if (result.status === "success") return result.message;
+            throw new Error(result.message);
+          },
+          error: () => {
+            setItems(previousItems);
+            return "Faild to update";
+          },
+        });
+      }
+
+      return;
     }
   }
 

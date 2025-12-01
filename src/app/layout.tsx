@@ -25,7 +25,7 @@ export default function RootLayout({
         <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
           <TopLoader />
           {children}
-          <Toaster position="top-right" />
+          <Toaster closeButton position="top-right" />
         </ThemeProvider>
       </body>
     </html>
