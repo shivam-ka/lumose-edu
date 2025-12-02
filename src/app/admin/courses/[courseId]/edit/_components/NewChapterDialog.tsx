@@ -26,6 +26,7 @@ import { useState, useTransition } from "react";
 import { useForm } from "react-hook-form";
 import { createChapter } from "../actions";
 import { toast } from "sonner";
+import { LoadingButton } from "@/components/loading-btn";
 
 export function NewChapterDialog({ courseId }: { courseId: string }) {
   const [isOpen, setIsOpen] = useState(false);
@@ -100,13 +101,14 @@ export function NewChapterDialog({ courseId }: { courseId: string }) {
             </form>
           </Form>
           <DialogFooter>
-            <Button
-              disabled={isPending}
-              type="submit"
-              onClick={form.handleSubmit(onSubmit)}
-            >
-              {isPending ? "Saving..." : "Save Changes "}
-            </Button>
+           <LoadingButton
+                         loading={isPending}
+                         loadingText="Saving..."
+                         type="submit"
+                         onClick={form.handleSubmit(onSubmit)}
+                       >
+                         Save Changes
+                       </LoadingButton>
           </DialogFooter>
         </DialogContent>
       </Dialog>

@@ -26,6 +26,7 @@ import { useState, useTransition } from "react";
 import { useForm } from "react-hook-form";
 import { createLesson } from "../actions";
 import { toast } from "sonner";
+import { LoadingButton } from "@/components/loading-btn";
 
 export function NewLessonDialog({
   courseId,
@@ -110,13 +111,14 @@ export function NewLessonDialog({
             </form>
           </Form>
           <DialogFooter>
-            <Button
-              disabled={isPending}
+            <LoadingButton
+              loading={isPending}
+              loadingText="Saving..."
               type="submit"
               onClick={form.handleSubmit(onSubmit)}
             >
-              {isPending ? "Saving..." : "Save Changes "}
-            </Button>
+              Save Changes
+            </LoadingButton>
           </DialogFooter>
         </DialogContent>
       </Dialog>

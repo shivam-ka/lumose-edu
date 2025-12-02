@@ -15,6 +15,7 @@ import { Trash2Icon } from "lucide-react";
 import { useState, useTransition } from "react";
 import { deleteLesson } from "../actions";
 import { toast } from "sonner";
+import { LoadingButton } from "@/components/loading-btn";
 
 export function DeleteLesson({
   courseId,
@@ -74,15 +75,15 @@ export function DeleteLesson({
           </AlertDialogHeader>
           <AlertDialogFooter>
             <AlertDialogCancel>Cancel</AlertDialogCancel>
-            
-              <Button
-                variant="destructive"
-                disabled={isPending}
-                onClick={onSubmit}
-              >
-                {isPending ? "Deleting.." : "Delete"}
-              </Button>
-           
+
+            <LoadingButton
+              loading={isPending}
+              variant="destructive"
+              onClick={onSubmit}
+              loadingText="Deleting..."
+            >
+              Delete
+            </LoadingButton>
           </AlertDialogFooter>
         </AlertDialogContent>
       </AlertDialog>
