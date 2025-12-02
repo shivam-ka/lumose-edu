@@ -53,5 +53,15 @@ export const chapterSchema = z.object({
   courseId: z.string().uuid({ message: "invalid course id" }),
 });
 
+export const lessonSchema = z.object({
+  name: requiredString,
+  courseId: z.string().uuid({ message: "invalid course id" }),
+  chapterId: z.string().uuid({ message: "invalid chapter id" }),
+  description: optionalString.optional(),
+  thumbnailKey: optionalString.optional(),
+  videoKey: optionalString.optional(),
+});
+
 export type CourseSchemaType = z.infer<typeof courseSchema>;
 export type ChapterSchemaType = z.infer<typeof chapterSchema>;
+export type LessonSchemaType = z.infer<typeof lessonSchema>;

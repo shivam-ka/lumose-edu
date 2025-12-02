@@ -8,6 +8,8 @@ import {
   ChapterSchemaType,
   courseSchema,
   CourseSchemaType,
+  lessonSchema,
+  LessonSchemaType,
 } from "@/lib/validation";
 import { revalidatePath } from "next/cache";
 
@@ -209,7 +211,7 @@ export async function createChapter(
       });
     });
 
-    revalidatePath(`//admin/courses/${result.data.courseId}/edit`);
+    revalidatePath(`/admin/courses/${result.data.courseId}/edit`);
 
     return {
       status: "success",
@@ -219,7 +221,70 @@ export async function createChapter(
     console.error("Create Chapters Error:", error);
     return {
       status: "error",
-      message: "Failed to reorder lesson",
+      message: "Failed to create chapter",
+    };
+  }
+}
+
+export async function createLesson(
+  values: LessonSchemaType,
+): Promise<ApiResponse> {
+  const sesstion = await requireAdmin();
+  const user = sesstion?.user;
+
+  if (!user) {
+    return {
+      status: "error",
+      message: "unauthorized request",
+    };
+  }
+
+  try {
+    const result = lessonSchema.safeParse(values);
+
+    if (result.error) {
+      return {
+        status: "error",
+        message: "Invalid data",
+      };
+    }
+
+    await prisma.$transaction(async (tx) => {
+      const maxPosition = await tx.lesson.findFirst({
+        where: {
+          chapterId: result.data.chapterId,
+        },
+        select: {
+          position: true,
+        },
+        orderBy: {
+          position: "desc",
+        },
+      });
+
+      await tx.lesson.create({
+        data: {
+          title: result.data.name,
+          description: result.data.description,
+          thumbnailKey: result.data.thumbnailKey,
+          videoKey: result.data.videoKey,
+          chapterId: result.data.chapterId,
+          position: (maxPosition?.position ?? 0) + 1,
+        },
+      });
+    });
+
+    revalidatePath(`/admin/courses/${result.data.courseId}/edit`);
+
+    return {
+      status: "success",
+      message: "Lesson Created Successfully",
+    };
+  } catch (error) {
+    console.error("Create Lesson Error:", error);
+    return {
+      status: "error",
+      message: "Failed to Create lesson",
     };
   }
 }

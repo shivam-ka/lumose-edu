@@ -39,6 +39,7 @@ import { cn } from "@/lib/utils";
 import { toast } from "sonner";
 import { reorderChapters, reorderLessons } from "../actions";
 import { NewChapterDialog } from "./NewChapterDialog";
+import { NewLessonDialog } from "./NewLessonDialog";
 
 interface IAppProps {
   data: AdminSingleCourseType;
@@ -388,9 +389,10 @@ export function CourseStructure({ data }: IAppProps) {
                             ))}
 
                             <div className="px-3 py-2">
-                              <Button variant="outline" className="w-full">
-                                Create New Lesson
-                              </Button>
+                              <NewLessonDialog
+                                courseId={data.id}
+                                chapterId={item.id}
+                              />
                             </div>
                           </div>
                         </SortableContext>
