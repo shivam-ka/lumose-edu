@@ -13,7 +13,6 @@ import {
   ChevronRightIcon,
   FileTextIcon,
   GripVerticalIcon,
-  Trash2,
 } from "lucide-react";
 import Link from "next/link";
 import React, { ReactNode, useEffect, useState } from "react";
@@ -41,6 +40,7 @@ import { reorderChapters, reorderLessons } from "../actions";
 import { NewChapterDialog } from "./NewChapterDialog";
 import { NewLessonDialog } from "./NewLessonDialog";
 import { DeleteLesson } from "./DeleteLesson";
+import { DeleteChapter } from "./DeleteChapter";
 
 interface IAppProps {
   data: AdminSingleCourseType;
@@ -338,9 +338,7 @@ export function CourseStructure({ data }: IAppProps) {
                           <p className="p-2">{item.title}</p>
                         </div>
 
-                        <Button variant="destructive" size="icon">
-                          <Trash2 />
-                        </Button>
+                        <DeleteChapter chapterId={item.id} courseId={data.id} />
                       </div>
 
                       <CollapsibleContent>
