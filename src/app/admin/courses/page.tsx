@@ -4,6 +4,8 @@ import { IconCircleDashedPlus } from "@tabler/icons-react";
 import { Metadata } from "next";
 import Link from "next/link";
 import { AdminCourseCard } from "./_components/AdminCourseCard";
+import { EmptyState } from "@/components/general/empty-state";
+import { CircleFadingPlusIcon, FileSearch2Icon } from "lucide-react";
 
 export const metadata: Metadata = {
   title: "Courses",
@@ -11,6 +13,19 @@ export const metadata: Metadata = {
 
 export default async function Page() {
   const data = await adminGetcourses();
+
+  if (!data?.length) {
+    return (
+      <EmptyState
+        title="No course found"
+        description="You haven't created any courses yet."
+        linkText="Create Course"
+        linkHref="/admin/courses/create"
+        buttonIcon={<CircleFadingPlusIcon className="size-4" />}
+        icon={<FileSearch2Icon className="size-20" />}
+      />
+    );
+  }
 
   return (
     <>
