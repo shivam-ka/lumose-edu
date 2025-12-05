@@ -145,18 +145,6 @@ export default function SignInForm() {
             </form>
           </Form>
         </CardContent>
-
-        <CardFooter>
-          <p className="text-muted-foreground w-full text-sm">
-            Don&rsquo;t have an account?{" "}
-            <Link
-              href="/sign-up"
-              className="text-primary font-medium hover:underline"
-            >
-              Sign Up
-            </Link>
-          </p>
-        </CardFooter>
       </Card>
 
       <LoadingScreen loading={isLoading} text={loadingText} />

@@ -81,10 +81,10 @@ export default function UserDropdown({ user }: UserDropdownProps) {
           </Button>
         </DropdownMenuTrigger>
 
-        <DropdownMenuContent align="end" className="max-w-64">
+        <DropdownMenuContent align="end" className="max-w-64 min-w-48">
           <DropdownMenuLabel className="flex min-w-0 flex-col">
             <span className="text-foreground flex items-center gap-1 truncate text-sm font-medium">
-              {user.name || "Hello"}
+              {user.name || "Hello 👋"}
             </span>
             <span className="text-muted-foreground truncate text-sm font-normal">
               {user.email}

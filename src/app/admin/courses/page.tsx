@@ -3,15 +3,24 @@ import { Button } from "@/components/ui/button";
 import { IconCircleDashedPlus } from "@tabler/icons-react";
 import { Metadata } from "next";
 import Link from "next/link";
-import { AdminCourseCard } from "./_components/AdminCourseCard";
+import { AdminCourseCard, AdminCourseCardSkeleton } from "./_components/AdminCourseCard";
 import { EmptyState } from "@/components/general/empty-state";
 import { CircleFadingPlusIcon, FileSearch2Icon } from "lucide-react";
+import { Suspense } from "react";
 
 export const metadata: Metadata = {
   title: "Courses",
 };
 
 export default async function Page() {
+  return (
+    <Suspense fallback={<AdminCourseCardSkeleton />}>
+      <RenderCourse />
+    </Suspense>
+  )
+}
+
+async function RenderCourse (){
   const data = await adminGetcourses();
 
   if (!data?.length) {
