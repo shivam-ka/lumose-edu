@@ -14,7 +14,7 @@ export const metadata: Metadata = {
 
 export default function PublicCoursePage() {
   return (
-    <div className="px-12 py-5">
+    <div className="px-4 py-4 md:px-12 md:py-5">
       <h1 className="text-3xl font-bold md:text-4xl">Browse Courses</h1>
 
       <p className="text-muted-foreground mt-3 max-w-xl md:text-lg">
@@ -32,7 +32,7 @@ export default function PublicCoursePage() {
 async function RenderCourse() {
   const courses = await getAllCourses();
   return (
-    <div className="grid grid-cols-1 py-5 sm:gap-5 md:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4">
+    <div className="grid grid-cols-1 gap-5 py-5 md:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4">
       {courses.map((course) => (
         <PublicCourseCard key={course.id} data={course} />
       ))}
