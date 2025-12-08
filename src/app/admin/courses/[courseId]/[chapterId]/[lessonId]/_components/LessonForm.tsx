@@ -29,7 +29,7 @@ import { useForm } from "react-hook-form";
 import { updateLesson } from "../actions";
 import { toast } from "sonner";
 import LoadingScreen from "@/components/loading-screen";
-import { ArrowRightIcon, SaveIcon } from "lucide-react";
+import { ArrowRightIcon } from "lucide-react";
 
 interface IAppProps {
   data: AdminLessonType;
