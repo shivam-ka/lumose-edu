@@ -24,14 +24,17 @@ import {
   LayoutGridIcon,
   TimerIcon,
 } from "lucide-react";
-
 import Image from "next/image";
+import { checkIfCourseBougth } from "@/app/data/user/user-is-enrolled";
+import Link from "next/link";
+import { EnrollmentButton } from "./_components/EnrollmentButton";
 
 type Params = Promise<{ slug: string }>;
 
 export default async function SlugPage({ params }: { params: Params }) {
   const { slug } = await params;
   const course = await getIndividualCourse(slug);
+  const isEnrolled = await checkIfCourseBougth(course.id);
 
   return (
     <div className="grid grid-cols-1 gap-8 p-4 md:p-8 lg:grid-cols-3">
@@ -280,10 +283,18 @@ export default async function SlugPage({ params }: { params: Params }) {
                 </ul>
               </div>
 
-              <Button className="w-full rounded-sm">
-                Enroll Now
-                <ArrowRightIcon />
-              </Button>
+              {isEnrolled ? (
+                <Button asChild className="w-full">
+                  <Link href={``}>
+                    Watch now <ArrowRightIcon />
+                  </Link>
+                </Button>
+              ) : (
+                <EnrollmentButton
+                  courseId={course.id}
+                  redirectTo={`/courses/${course.slug}`}
+                />
+              )}
               <p className="text-muted-foreground text-sm">
                 30 Day Money back guarantee
               </p>
