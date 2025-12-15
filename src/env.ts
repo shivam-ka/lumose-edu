@@ -18,6 +18,7 @@ export const env = createEnv({
     AWS_REGION: z.string().min(1),
     // Stripe
     STRIPE_PUBLIC_KEY: z.string().min(1),
+    STRIPE_WEBHOOK_SECRET: z.string().min(1),
   },
   client: {
     NEXT_PUBLIC_S3_BUCKET_NAME_IMAGES: z.string().min(1),
@@ -43,5 +44,6 @@ export const env = createEnv({
     STRIPE_PUBLIC_KEY: process.env.STRIPE_PUBLIC_KEY,
 
     NEXT_PUBLIC_BETTER_AUTH_URL: process.env.BETTER_AUTH_URL,
+    STRIPE_WEBHOOK_SECRET: process.env.STRIPE_WEBHOOK_SECRET,
   },
 });

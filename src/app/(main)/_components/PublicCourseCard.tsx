@@ -85,7 +85,7 @@ export function PublicCourseCard({ data }: IAppProps) {
 
 export function PublicCourseCardSkeleton() {
   return (
-    <div className="grid grid-cols-1 py-5 sm:gap-5 md:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4">
+    <div className="grid grid-cols-1 gap-5 py-5 md:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4">
       {Array.from({ length: 5 }).map((_, index) => (
         <Card key={index} className="group relative gap-2 p-2">
           <Skeleton className="h-48 rounded-sm" />

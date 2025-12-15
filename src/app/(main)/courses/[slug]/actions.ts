@@ -126,8 +126,8 @@ export async function enrollingCourseAction(
           },
         ],
         mode: "payment",
-        success_url: `${env.NEXT_PUBLIC_BETTER_AUTH_URL}/payment/success`,
-        cancel_url: `${env.NEXT_PUBLIC_BETTER_AUTH_URL}/payment/cancel`,
+        success_url: `${env.NEXT_PUBLIC_BETTER_AUTH_URL}/payment/success?session_id={CHECKOUT_SESSION_ID}`,
+        cancel_url: `${env.NEXT_PUBLIC_BETTER_AUTH_URL}/payment/cancel?session_id={CHECKOUT_SESSION_ID}&course=${course.slug}`,
         metadata: {
           userId: user.id,
           enrollmentId: enrollment.id,
