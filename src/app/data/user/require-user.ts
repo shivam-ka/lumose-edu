@@ -1,13 +1,14 @@
+import "server-only";
 import { getServerSession } from "@/lib/get-sesstion";
 import { redirect } from "next/navigation";
+import { cache } from "react";
 
-export async function requireUser(redirectTo?: string) {
+export const requireUser = cache(async (redirectTo?: string) => {
   const session = await getServerSession();
-  console.log(redirectTo);
 
   if (!session) {
     redirect(redirectTo ? `/sign-in?redirect=${redirectTo}` : "/sign-in");
   }
 
   return session.user;
-}
+});

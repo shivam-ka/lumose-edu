@@ -11,7 +11,7 @@ export default async function Navbar() {
   const user = session?.user;
 
   return (
-    <header className="sticky top-0 z-50 flex items-center justify-between border-b border-b-neutral-600 px-2 py-4 backdrop-blur-md 2xl:px-20">
+    <header className="bg-background/80 sticky top-0 z-50 flex items-center justify-between border-b border-b-neutral-600 px-2 py-4 backdrop-blur-md 2xl:px-20">
       <Link href="/" className="flex items-center gap-2">
         <Image
           className="h-8 w-8 sm:h-10 sm:w-10"
@@ -35,8 +35,8 @@ export default async function Navbar() {
 
         <ThemeToggleButton
           className="size-7"
-          variant="rectangle"
-          start="top-right"
+          variant="polygon"
+          start="center"
         />
       </div>
     </header>
