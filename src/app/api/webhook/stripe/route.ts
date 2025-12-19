@@ -45,8 +45,6 @@ export async function POST(request: NextRequest) {
       throw new Error("user not found");
     }
 
-    console.log("working", user);
-
     await prisma.enrollment.update({
       where: {
         id: session.metadata?.enrollmentId,

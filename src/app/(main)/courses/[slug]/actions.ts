@@ -25,6 +25,7 @@ export async function enrollingCourseAction(
         title: true,
         price: true,
         slug: true,
+        stripePriceId: true,
       },
     });
 
@@ -121,7 +122,7 @@ export async function enrollingCourseAction(
         customer: stripeCustomerId,
         line_items: [
           {
-            price: "",
+            price: course.stripePriceId,
             quantity: 1,
           },
         ],

@@ -1,16 +1,14 @@
 import { ChartAreaInteractive } from "@/components/chart-area-interactive";
-import { DataTable } from "@/components/data-table";
-import data from "./data.json";
 import { SectionCards } from "@/components/section-cards";
+import { adminGetEnrollmentStatus } from "../data/admin/admin-get-enrollment-status";
 
-export default function Page() {
+export default async function Page() {
+  const enrollmentData = await adminGetEnrollmentStatus();
+
   return (
     <>
       <SectionCards />
-      <div className="px-4 lg:px-6">
-        <ChartAreaInteractive />
-      </div>
-      <DataTable data={data} />
+      <ChartAreaInteractive data={enrollmentData} />
     </>
   );
 }
