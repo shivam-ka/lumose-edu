@@ -13,7 +13,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { User } from "better-auth";
+import { User } from "@/lib/auth";
 
 import {
   LogOutIcon,
@@ -21,6 +21,7 @@ import {
   BookOpen,
   LayoutDashboard,
   LucideProps,
+  ShieldUserIcon,
 } from "lucide-react";
 import Link from "next/link";
 import { useState } from "react";
@@ -103,6 +104,17 @@ export default function UserDropdown({ user }: UserDropdownProps) {
           </DropdownMenuGroup>
 
           <DropdownMenuSeparator />
+          {user.role === "admin" && (
+            <>
+              <DropdownMenuItem asChild>
+                <Link href="/admin">
+                  <ShieldUserIcon />
+                  <span className="capitalize">Admin Panel</span>
+                </Link>
+              </DropdownMenuItem>
+              <DropdownMenuSeparator />
+            </>
+          )}
           <DropdownMenuItem onClick={() => setIsOpen(!isOpen)}>
             <LogOutIcon size={16} className="opacity-60" aria-hidden="true" />
             <span className="text-destructive hover:text-destructive">

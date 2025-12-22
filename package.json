@@ -36,7 +36,7 @@
     "@radix-ui/react-tooltip": "^1.2.8",
     "@react-email/render": "^2.0.0",
     "@t3-oss/env-nextjs": "^0.13.8",
-    "@tabler/icons-react": "^3.35.0",
+    "@tabler/icons-react": "^3.36.0",
     "@tanstack/react-table": "^8.21.3",
     "@tiptap/extension-text-align": "^3.7.2",
     "@tiptap/pm": "^3.7.2",

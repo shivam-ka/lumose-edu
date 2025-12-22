@@ -1,17 +1,17 @@
 import {
-  Dialog,
-  DialogClose,
-  DialogContent,
-  DialogDescription,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
-} from "@/components/ui/dialog";
+  AlertDialog,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from "@/components/ui/alert-dialog";
 import { authClient } from "@/lib/auth-client";
-import { useState } from "react";
+import { useState, useTransition } from "react";
 import { toast } from "sonner";
 import { Button } from "./ui/button";
-import { Loader } from "lucide-react";
+import { LoadingButton } from "./loading-btn";
 
 interface SignOutConfirmProps {
   open: boolean;
@@ -20,53 +20,49 @@ interface SignOutConfirmProps {
 
 export function SignOutConfirm({ open, onOpenChange }: SignOutConfirmProps) {
   const [isLoading, setIsLoading] = useState(false);
+  const [isPending, startTransition] = useTransition();
 
-  async function signOut() {
-    setIsLoading(true);
-    const { error } = await authClient.signOut();
+  function signOut() {
+    startTransition(async () => {
+      const { error } = await authClient.signOut();
 
-    if (error) {
-      toast.error(error.message || "Something went wrong");
-    } else {
-      window.location.href = "/sign-in";
-    }
-    setIsLoading(false);
+      if (error) {
+        toast.error(error.message || "Something went wrong");
+        setIsLoading(false);
+      } else {
+        window.location.href = "/sign-in";
+      }
+    });
   }
 
   return (
-    <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent>
-        <DialogHeader>
-          <DialogTitle>Are you sure you want to logout?</DialogTitle>
-          <DialogDescription>
-            {`You'll need to sign in again to access your account.`}
-          </DialogDescription>
-        </DialogHeader>
-        <DialogFooter>
-          <DialogClose asChild>
+    <AlertDialog open={open} onOpenChange={onOpenChange}>
+      <AlertDialogContent>
+        <AlertDialogHeader>
+          <AlertDialogTitle>Are you sure you want to logout?</AlertDialogTitle>
+          <AlertDialogDescription>
+            You will need to sign in again to access your account.
+          </AlertDialogDescription>
+        </AlertDialogHeader>
+
+        <AlertDialogFooter>
+          <AlertDialogCancel asChild>
             <Button variant="outline" disabled={isLoading}>
               Cancel
             </Button>
-          </DialogClose>
-          <Button
-            disabled={isLoading}
-            className="dark:bg-red-800 w-full sm:w-fit"
+          </AlertDialogCancel>
+
+          <LoadingButton
+            loading={isPending}
             variant="destructive"
-            onClick={() => {
-              signOut();
-            }}
+            className="dark:bg-red-800"
+            onClick={signOut}
+            loadingText="Loading..."
           >
-            {isLoading ? (
-              <>
-                <Loader className="animate-spin" />
-                Loading...
-              </>
-            ) : (
-              "Logout"
-            )}
-          </Button>
-        </DialogFooter>
-      </DialogContent>
-    </Dialog>
+            Logout
+          </LoadingButton>
+        </AlertDialogFooter>
+      </AlertDialogContent>
+    </AlertDialog>
   );
 }

@@ -1,13 +1,30 @@
 import z from "zod";
 
+const requiredString = z
+  .string()
+  .trim()
+  .min(3, "Must be at least 3 characters");
+const optionalString = z.string();
+
+export const passwordSchema = z
+  .string()
+  .min(1, { message: "Password is required" })
+  .min(8, { message: "Password must be at least 8 characters" })
+  .regex(/[^A-Za-z0-9]/, {
+    message: "Password must contain at least one special character",
+  });
+
 export const signInSchema = z.object({
   email: z.email({ message: "Please enter a valid email" }),
+  password: requiredString.min(8),
+  rememberMe: z.boolean(),
 });
 
-export type SignInValues = z.infer<typeof signInSchema>;
-
-const requiredString = z.string().min(3, "Must be at least 3 characters");
-const optionalString = z.string();
+export const signUpSchema = z.object({
+  name: requiredString,
+  email: z.email({ message: "Please enter a valid email address" }),
+  password: passwordSchema,
+});
 
 export const courseLevels = ["Beginner", "Intermediate", "Advanced"] as const;
 export const courseStatus = ["Draft", "Published", "Archived"] as const;
@@ -62,6 +79,8 @@ export const lessonSchema = z.object({
   videoKey: optionalString.optional(),
 });
 
+export type SignInValues = z.infer<typeof signInSchema>;
+export type SignUpValues = z.infer<typeof signUpSchema>;
 export type CourseSchemaType = z.infer<typeof courseSchema>;
 export type ChapterSchemaType = z.infer<typeof chapterSchema>;
 export type LessonSchemaType = z.infer<typeof lessonSchema>;
