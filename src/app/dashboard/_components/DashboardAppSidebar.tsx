@@ -6,10 +6,6 @@ import {
   IconSearch,
   IconSettings,
   IconLayoutDashboard,
-  IconBook,
-  IconChartBar,
-  IconUsers,
-  IconFolder,
 } from "@tabler/icons-react";
 
 import { NavMain } from "@/components/nav-main";
@@ -29,7 +25,8 @@ import { appName } from "@/constant/app";
 import Image from "next/image";
 import { User } from "@/lib/auth";
 
-interface AppSidebarProps extends React.ComponentProps<typeof Sidebar> {
+interface DashboardAppSidebarProps
+  extends React.ComponentProps<typeof Sidebar> {
   user: User;
 }
 
@@ -37,28 +34,8 @@ const data = {
   navMain: [
     {
       title: "Dashboard",
-      url: "/admin",
+      url: "/dashboard",
       icon: IconLayoutDashboard,
-    },
-    {
-      title: "Courses",
-      url: "/admin/courses",
-      icon: IconBook,
-    },
-    {
-      title: "Analysts",
-      url: "/admin/analysts",
-      icon: IconChartBar,
-    },
-    {
-      title: "Teams",
-      url: "/admin/teams",
-      icon: IconUsers,
-    },
-    {
-      title: "Projects",
-      url: "/admin/projects",
-      icon: IconFolder,
     },
   ],
 
@@ -81,7 +58,10 @@ const data = {
   ],
 };
 
-export function AppSidebar({ user, ...props }: AppSidebarProps) {
+export function DashboardAppSidebar({
+  user,
+  ...props
+}: DashboardAppSidebarProps) {
   return (
     <Sidebar collapsible="offcanvas" {...props}>
       <SidebarHeader>

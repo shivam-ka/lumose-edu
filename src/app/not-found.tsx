@@ -10,6 +10,7 @@ export default function Page() {
       linkHref="/"
       linkText="Home"
       buttonIcon={<HomeIcon className="size-4" />}
+      className="min-h-screen"
     />
   );
 }

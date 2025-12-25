@@ -29,7 +29,7 @@ export default async function Navbar() {
           <UserDropdown user={user} />
         ) : (
           <Button size="sm" asChild>
-            <Link href="/sign-in">Create Account</Link>
+            <Link href="/sign-up">Create Account</Link>
           </Button>
         )}
 

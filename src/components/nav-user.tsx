@@ -25,28 +25,17 @@ import {
   SidebarMenuItem,
   useSidebar,
 } from "@/components/ui/sidebar";
-import { authClient } from "@/lib/auth-client";
+
 import Link from "next/link";
-import { Skeleton } from "./ui/skeleton";
+
 import { useState } from "react";
 import { SignOutConfirm } from "./sign-out-confirm";
+import { User } from "@/lib/auth";
 
-export function NavUser() {
+export function NavUser({ user }: { user: User }) {
   const { isMobile } = useSidebar();
 
-  const { data: session, isPending } = authClient.useSession();
-  const user = session?.user;
-
   const [isOpen, setIsOpen] = useState(false);
-
-  if (isPending || !user) {
-    return (
-      <div className="flex h-12 gap-2 p-2">
-        <Skeleton className="size-8" />
-        <Skeleton className="flex-1" />
-      </div>
-    );
-  }
 
   interface navMenuProps {
     title: string;

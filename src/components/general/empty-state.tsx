@@ -5,6 +5,7 @@ import { ReactNode } from "react";
 import { Button } from "@/components/ui/button";
 import { ArrowLeft } from "lucide-react";
 import { useRouter } from "next/navigation";
+import { cn } from "@/lib/utils";
 
 interface EmptyStateProps {
   title?: string;
@@ -13,6 +14,7 @@ interface EmptyStateProps {
   linkHref?: string;
   icon?: ReactNode;
   buttonIcon?: ReactNode;
+  className?: string;
 }
 
 export function EmptyState({
@@ -22,13 +24,19 @@ export function EmptyState({
   linkHref,
   icon,
   buttonIcon,
+  className,
 }: EmptyStateProps) {
   const router = useRouter();
 
   return (
-    <div className="absolute top-1/2 left-1/2 flex -translate-x-1/2 -translate-y-1/2 flex-col items-center justify-center space-y-2 text-center">
+    <div
+      className={cn(
+        "flex w-full flex-1 flex-col items-center justify-center space-y-2 text-center",
+        className,
+      )}
+    >
       {icon}
-      <h2 className="mt-4 text-4xl font-semibold">{title}</h2>
+      <h2 className="mt-4 text-3xl font-semibold sm:text-4xl">{title}</h2>
       <p className="text-muted-foreground max-w-md px-4 text-base sm:text-lg">
         {description}
       </p>

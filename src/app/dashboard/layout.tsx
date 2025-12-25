@@ -1,23 +1,14 @@
-import { AppSidebar } from "@/components/app-sidebar";
 import { SiteHeader } from "@/components/site-header";
 import { SidebarInset, SidebarProvider } from "@/components/ui/sidebar";
-import { getServerSession } from "@/lib/get-sesstion";
-import { redirect } from "next/navigation";
+import { DashboardAppSidebar } from "./_components/DashboardAppSidebar";
+import { requireUser } from "../data/user/require-user";
 
-export default async function AdminLayout({
+export default async function Layout({
   children,
 }: {
   children: React.ReactNode;
 }) {
-  const session = await getServerSession();
-
-  if (!session) {
-    return redirect("/sign-in");
-  }
-
-  if (session.user.role !== "admin") {
-    return redirect("/");
-  }
+  const user = await requireUser("/dashboard");
 
   return (
     <SidebarProvider
@@ -28,7 +19,7 @@ export default async function AdminLayout({
         } as React.CSSProperties
       }
     >
-      <AppSidebar user={session.user} variant="inset" />
+      <DashboardAppSidebar user={user} variant="inset" />
       <SidebarInset>
         <SiteHeader />
         <div className="flex flex-1 flex-col">
