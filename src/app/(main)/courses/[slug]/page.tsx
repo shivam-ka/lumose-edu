@@ -28,8 +28,38 @@ import Image from "next/image";
 import { checkIfCourseBougth } from "@/app/data/user/user-is-enrolled";
 import Link from "next/link";
 import { EnrollmentButton } from "./_components/EnrollmentButton";
+import { Metadata } from "next";
 
 type Params = Promise<{ slug: string }>;
+
+export async function generateMetadata({
+  params,
+}: {
+  params: Params;
+}): Promise<Metadata> {
+  const { slug } = await params;
+  const course = await getIndividualCourse(slug);
+
+  if (!course) {
+    return {
+      title: "Course Not Found",
+    };
+  }
+
+  return {
+    title: course.title,
+    description: course.smallDescription,
+    openGraph: {
+      title: course.title,
+      description: course.smallDescription,
+      images: [
+        {
+          url: `https://${process.env.NEXT_PUBLIC_S3_BUCKET_NAME_IMAGES}.fly.storage.tigris.dev/${course.fileKey}`,
+        },
+      ],
+    },
+  };
+}
 
 export default async function SlugPage({ params }: { params: Params }) {
   const { slug } = await params;

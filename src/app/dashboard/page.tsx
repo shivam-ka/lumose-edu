@@ -4,6 +4,13 @@ import { getEnrolledCourses } from "../data/user/get-enrolled-courses";
 import { CircleXIcon, LibraryIcon } from "lucide-react";
 import { PublicCourseCard } from "../(main)/_components/PublicCourseCard";
 import { CourseProgressCard } from "./_components/CourseProgressCard";
+import { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Dashboard",
+  description:
+    "Access your courses, progress, and account settings in one place.",
+};
 
 export default async function UserDashboard() {
   const [courses, enrolledCourses] = await Promise.all([
@@ -35,6 +42,7 @@ export default async function UserDashboard() {
           linkHref="/courses"
           linkText="Browse Courses"
           icon={<CircleXIcon className="size-20" />}
+          className="py-20"
         />
       ) : (
         <>

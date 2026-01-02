@@ -12,6 +12,8 @@ export const metadata: Metadata = {
     "Explore top-quality courses crafted to boost your skills and learning journey.",
 };
 
+export const dynamic = "force-dynamic"
+
 export default function PublicCoursePage() {
   return (
     <div className="px-4 py-4 md:px-12 md:py-5">
