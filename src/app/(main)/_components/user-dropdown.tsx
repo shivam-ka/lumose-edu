@@ -63,7 +63,7 @@ export default function UserDropdown({ user }: UserDropdownProps) {
         <DropdownMenuTrigger asChild>
           <Button
             variant="ghost"
-            className="text-muted-foreground gap-1 border px-2 capitalize focus-visible:ring-0"
+            className="text-muted-foreground gap-1 border px-2 focus-visible:ring-0"
           >
             <Avatar className="size-7">
               {user.image ? (

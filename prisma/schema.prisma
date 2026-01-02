@@ -9,17 +9,18 @@ datasource db {
 }
 
 model User {
-  id            String       @id @default(uuid()) @map("_id")
-  name          String
-  email         String
-  emailVerified Boolean      @default(false)
-  image         String?
-  createdAt     DateTime     @default(now())
-  updatedAt     DateTime     @default(now()) @updatedAt
-  sessions      Session[]
-  accounts      Account[]
-  courses       Course[]
-  enrollment    Enrollment[]
+  id             String           @id @default(uuid()) @map("_id")
+  name           String
+  email          String
+  emailVerified  Boolean          @default(false)
+  image          String?
+  createdAt      DateTime         @default(now())
+  updatedAt      DateTime         @default(now()) @updatedAt
+  sessions       Session[]
+  accounts       Account[]
+  courses        Course[]
+  enrollment     Enrollment[]
+  lessonProgress LessonProgress[]
 
   stripeCustomerId String? @unique
 
@@ -150,6 +151,8 @@ model Lesson {
   chapter   Chapter  @relation(fields: [chapterId], references: [id], onDelete: Cascade)
   chapterId String
 
+  lessonProgress LessonProgress[]
+
   @@map("lesson")
 }
 
@@ -169,6 +172,23 @@ model Enrollment {
 
   @@unique([userId, courseId])
   @@map("enrollment")
+}
+
+model LessonProgress {
+  id String @id @default(uuid()) @map("_id")
+
+  completed Boolean @default(false)
+
+  user     User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId   String
+  lesson   Lesson @relation(fields: [lessonId], references: [id], onDelete: Cascade)
+  lessonId String
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now()) @updatedAt
+
+  @@unique([userId, lessonId])
+  @@map("lessonProgress")
 }
 
 enum EnrollmentStatus {

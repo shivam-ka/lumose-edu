@@ -1,3 +1,4 @@
+"use client";
 import { CourseSidebarDataType } from "@/app/data/course/get-course-sidebar-data";
 import { Button } from "@/components/ui/button";
 import {
@@ -8,12 +9,20 @@ import {
 import { Progress } from "@/components/ui/progress";
 import { IconChevronRight, IconPlayerPlayFilled } from "@tabler/icons-react";
 import { LessonItem } from "./LessonItem";
+import { usePathname } from "next/navigation";
+import { useCourseProgress } from "@/hooks/use-course-progress";
 
 interface IAppProps {
   course: CourseSidebarDataType;
 }
 
 export function CourseSidebar({ course }: IAppProps) {
+  const pathName = usePathname();
+  const currentLessonId = pathName.split("/").pop();
+
+  const { totalLessons, completedLessons, progressPercentage } =
+    useCourseProgress({ courseData: course });
+
   return (
     <div className="flex h-full flex-col pb-5">
       <div className="border-border border-b pr-4 pb-4">
@@ -35,10 +44,14 @@ export function CourseSidebar({ course }: IAppProps) {
         <div className="space-y-2">
           <div className="flex justify-between">
             <span>Progress</span>
-            <span className="text-muted-foreground">4/10 lessons</span>
+            <span className="text-muted-foreground">
+              {completedLessons}/{totalLessons} lessons
+            </span>
           </div>
-          <Progress value={55} className="h-1.5" />
-          <p className="text-muted-foreground text-sm">55% Complete</p>
+          <Progress value={progressPercentage} className="h-1.5" />
+          <p className="text-muted-foreground text-sm">
+            {progressPercentage}% Completed
+          </p>
         </div>
       </div>
 
@@ -67,6 +80,12 @@ export function CourseSidebar({ course }: IAppProps) {
                   key={lesson.id}
                   lesson={lesson}
                   slug={course.slug}
+                  isActive={lesson.id === currentLessonId}
+                  complete={
+                    lesson.lessonProgress.find(
+                      (item) => item.lessonId === lesson.id,
+                    )?.completed || false
+                  }
                 />
               ))}
             </CollapsibleContent>

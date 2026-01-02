@@ -3,7 +3,7 @@ import { getAllCourses } from "../data/course/get-all-courses";
 import { getEnrolledCourses } from "../data/user/get-enrolled-courses";
 import { CircleXIcon, LibraryIcon } from "lucide-react";
 import { PublicCourseCard } from "../(main)/_components/PublicCourseCard";
-import Link from "next/link";
+import { CourseProgressCard } from "./_components/CourseProgressCard";
 
 export default async function UserDashboard() {
   const [courses, enrolledCourses] = await Promise.all([
@@ -41,9 +41,7 @@ export default async function UserDashboard() {
           <p>Here are the courses you are currently enrolled in.</p>
           <div className="grid grid-cols-1 gap-6 py-4 sm:grid-cols-1 lg:grid-cols-2 xl:grid-cols-3">
             {enrolledCourses.map(({ course }) => (
-              <Link href={`/dashboard/${course.slug}`} key={course.id}>
-                {course.title}
-              </Link>
+              <CourseProgressCard key={course.id} data={course} />
             ))}
           </div>
         </>
