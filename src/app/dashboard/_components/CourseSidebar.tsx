@@ -11,6 +11,14 @@ import { IconChevronRight, IconPlayerPlayFilled } from "@tabler/icons-react";
 import { LessonItem } from "./LessonItem";
 import { usePathname } from "next/navigation";
 import { useCourseProgress } from "@/hooks/use-course-progress";
+import { useIsMobile } from "@/hooks/use-mobile";
+import {
+  Sheet,
+  SheetContent,
+  SheetTitle,
+  SheetTrigger,
+} from "@/components/ui/sheet";
+import { ChevronsRightIcon } from "lucide-react";
 
 interface IAppProps {
   course: CourseSidebarDataType;
@@ -92,6 +100,38 @@ export function CourseSidebar({ course }: IAppProps) {
           </Collapsible>
         ))}
       </div>
+    </div>
+  );
+}
+
+export function RenderSidebar({ course }: { course: CourseSidebarDataType }) {
+  const isMobile = useIsMobile();
+
+  if (isMobile) {
+    return (
+      <Sheet>
+        <SheetTrigger asChild>
+          <Button
+            variant="outline"
+            size="icon"
+            className="fixed bottom-5 left-5 z-50"
+          >
+            <ChevronsRightIcon className="size-5" />
+          </Button>
+        </SheetTrigger>
+        <SheetContent side="left">
+          <SheetTitle></SheetTitle>
+          <div className="w-full min-w-[250px] shrink-0 py-5 pl-4">
+            <CourseSidebar course={course} />
+          </div>
+        </SheetContent>
+      </Sheet>
+    );
+  }
+
+  return (
+    <div className="border-border w-1/4 min-w-[250px] shrink-0 border-r-2">
+      <CourseSidebar course={course} />
     </div>
   );
 }

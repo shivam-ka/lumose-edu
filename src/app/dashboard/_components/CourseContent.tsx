@@ -9,6 +9,8 @@ import { useRef, useTransition } from "react";
 import { markLessonComplete } from "../[slug]/[lessonId]/actions";
 import { toast } from "sonner";
 import { LoadingButton } from "@/components/loading-btn";
+import { useIsMobile } from "@/hooks/use-mobile";
+import { cn } from "@/lib/utils";
 
 interface IAppProps {
   data: LessonContentType;
@@ -16,6 +18,7 @@ interface IAppProps {
 
 export function CourseContent({ data }: IAppProps) {
   const [isPending, startTransition] = useTransition();
+  const isMobile = useIsMobile();
 
   function onSubmit() {
     startTransition(async () => {
@@ -37,7 +40,7 @@ export function CourseContent({ data }: IAppProps) {
   }
 
   return (
-    <div className="flex h-auto flex-col pl-6">
+    <div className={cn("flex h-auto flex-col pl-6", isMobile && "pl-0")}>
       {data.videoKey ? (
         <VideoPlayer
           thumbnailKey={data.thumbnailKey || ""}
@@ -53,6 +56,9 @@ export function CourseContent({ data }: IAppProps) {
           </p>
         </div>
       )}
+
+      <h1 className="mt-3 text-xl font-semibold">{data.title}</h1>
+
       <div className="border-b-2 py-4">
         {!data.lessonProgress.length ? (
           <LoadingButton
@@ -76,7 +82,6 @@ export function CourseContent({ data }: IAppProps) {
       </div>
 
       <div className="py-4">
-        <h1>{data.title}</h1>
         {data.description && (
           <div className="bg-card p-4">
             <RenderDescription json={JSON.parse(data.description)} />

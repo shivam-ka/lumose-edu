@@ -11,6 +11,8 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
+import { authClient } from "@/lib/auth-client";
+import { signInSchema, SignInValues } from "@/lib/validation";
 import Image from "next/image";
 import { useTransition } from "react";
 import { useForm } from "react-hook-form";
@@ -26,24 +28,23 @@ import {
 import { Input } from "@/components/ui/input";
 import { useRouter, useSearchParams } from "next/navigation";
 import { toast } from "sonner";
-import { signUpSchema, SignUpValues } from "@/lib/validation";
-import { authClient } from "@/lib/auth-client";
 import Link from "next/link";
+import { Checkbox } from "@/components/ui/checkbox";
 import { PasswordInput } from "@/components/password-input";
 
-export function SignUpForm() {
+export default function SignInForm() {
   const [isPending, startTransition] = useTransition();
 
   const params = useSearchParams();
   const redirect = params.get("redirect");
   const router = useRouter();
 
-  const form = useForm<SignUpValues>({
-    resolver: zodResolver(signUpSchema),
+  const form = useForm<SignInValues>({
+    resolver: zodResolver(signInSchema),
     defaultValues: {
-      name: "",
-      email: "",
-      password: "",
+      email: "super-user@email.com",
+      password: "SuperUser@123",
+      rememberMe: true,
     },
   });
 
@@ -61,17 +62,18 @@ export function SignUpForm() {
     });
   }
 
-  function onSubmitHandler(values: SignUpValues) {
+  function onSubmitHandler({ email, password, rememberMe }: SignInValues) {
     startTransition(async () => {
-      const { data, error } = await authClient.signUp.email({
-        ...values,
+      const { data, error } = await authClient.signIn.email({
+        email,
+        password,
+        rememberMe,
       });
 
       if (error) {
         toast.error(error.message);
-        console.error(error);
       } else if (data.user) {
-        router.replace(redirect || "/");
+        router.replace(redirect ?? "/");
       }
     });
   }
@@ -82,10 +84,10 @@ export function SignUpForm() {
         <CardHeader className="space-y-2">
           <CardTitle className="flex items-center gap-2 text-2xl font-semibold">
             <Image alt="logo" src="/logo.svg" width={30} height={30} />
-            Create Account !
+            Welcome Back !
           </CardTitle>
           <CardDescription className="text-muted-foreground text-base">
-            Create account to continue
+            Sign in to your account to continue
           </CardDescription>
         </CardHeader>
 
@@ -114,25 +116,6 @@ export function SignUpForm() {
               className="space-y-4"
               onSubmit={form.handleSubmit(onSubmitHandler)}
             >
-              <FormField
-                control={form.control}
-                name="name"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel className="text-sm font-medium">Name</FormLabel>
-                    <FormControl>
-                      <Input
-                        type="name"
-                        placeholder="your name"
-                        className="focus-visible:ring-primary/50"
-                        {...field}
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-
               <FormField
                 control={form.control}
                 name="email"
@@ -172,8 +155,24 @@ export function SignUpForm() {
                 )}
               />
 
+              <FormField
+                control={form.control}
+                name="rememberMe"
+                render={({ field }) => (
+                  <FormItem className="flex items-center gap-2">
+                    <FormControl>
+                      <Checkbox
+                        checked={field.value}
+                        onCheckedChange={field.onChange}
+                      />
+                    </FormControl>
+                    <FormLabel>Remember me</FormLabel>
+                  </FormItem>
+                )}
+              />
+
               <Button disabled={isPending} type="submit" className="w-full">
-                Create Account
+                Sign In
               </Button>
             </form>
           </Form>
@@ -182,13 +181,17 @@ export function SignUpForm() {
           <div className="flex w-full">
             <p className="text-muted-foreground text-sm">
               Already have an account?{" "}
-              <Link href="/sign-in" className="text-primary hover:underline">
-                Sign in
+              <Link
+                href={redirect ? `/sign-up?redirect=${redirect}` : "/sign-up"}
+                className="text-primary hover:underline"
+              >
+                Create Account
               </Link>
             </p>
           </div>
         </CardFooter>
       </Card>
+
       <LoadingScreen loading={isPending} text="Please Wait..." />
     </>
   );

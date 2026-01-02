@@ -30,7 +30,7 @@ export default function Home() {
 
           <div className="flex items-center justify-center gap-4 pt-4">
             <Button size="lg" asChild>
-              <Link href="/sign-in">Get Started</Link>
+              <Link href="/dashboard">Get Started</Link>
             </Button>
 
             <Button variant="outline" size="lg" asChild>
