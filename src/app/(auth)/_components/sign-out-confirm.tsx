@@ -8,10 +8,10 @@ import {
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
 import { authClient } from "@/lib/auth-client";
-import { useState, useTransition } from "react";
+import { useTransition } from "react";
 import { toast } from "sonner";
-import { Button } from "./ui/button";
-import { LoadingButton } from "./loading-btn";
+import { Button } from "../../../components/ui/button";
+import { LoadingButton } from "../../../components/loading-btn";
 
 interface SignOutConfirmProps {
   open: boolean;
@@ -19,7 +19,6 @@ interface SignOutConfirmProps {
 }
 
 export function SignOutConfirm({ open, onOpenChange }: SignOutConfirmProps) {
-  const [isLoading, setIsLoading] = useState(false);
   const [isPending, startTransition] = useTransition();
 
   function signOut() {
@@ -28,7 +27,6 @@ export function SignOutConfirm({ open, onOpenChange }: SignOutConfirmProps) {
 
       if (error) {
         toast.error(error.message || "Something went wrong");
-        setIsLoading(false);
       } else {
         window.location.href = "/sign-in";
       }
@@ -47,7 +45,7 @@ export function SignOutConfirm({ open, onOpenChange }: SignOutConfirmProps) {
 
         <AlertDialogFooter>
           <AlertDialogCancel asChild>
-            <Button variant="outline" disabled={isLoading}>
+            <Button variant="outline" disabled={isPending}>
               Cancel
             </Button>
           </AlertDialogCancel>

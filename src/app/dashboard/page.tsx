@@ -71,6 +71,7 @@ export default async function UserDashboard() {
             linkHref="/courses"
             linkText="Browse Courses"
             icon={<LibraryIcon className="size-20" />}
+            className="py-20"
           />
         ) : (
           <div className="grid grid-cols-1 gap-6 py-4 sm:grid-cols-1 lg:grid-cols-2 xl:grid-cols-3">

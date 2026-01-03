@@ -72,7 +72,7 @@ export function CourseSidebar({ course }: IAppProps) {
                   <IconChevronRight className="size-4" />
                 </div>
                 <div className="ml-1 min-w-0 flex-1 text-left">
-                  <p className="line-clamp-1">
+                  <p className="text-wrap">
                     {chapter.position}.
                     <span className="ml-2">{chapter.title}</span>
                   </p>

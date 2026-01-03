@@ -29,7 +29,7 @@ import {
 import Link from "next/link";
 
 import { useState } from "react";
-import { SignOutConfirm } from "./sign-out-confirm";
+import { SignOutConfirm } from "../app/(auth)/_components/sign-out-confirm";
 import { User } from "@/lib/auth";
 
 export function NavUser({ user }: { user: User }) {

@@ -322,7 +322,7 @@ export default async function SlugPage({ params }: { params: Params }) {
               ) : (
                 <EnrollmentButton
                   courseId={course.id}
-                  redirectTo={`/courses/${course.slug}`}
+                  redirectTo={`/dashboard/${course.slug}`}
                 />
               )}
               <p className="text-muted-foreground text-sm">

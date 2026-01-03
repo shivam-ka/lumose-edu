@@ -1,6 +1,6 @@
 "use client";
 
-import { SignOutConfirm } from "@/components/sign-out-confirm";
+import { SignOutConfirm } from "@/app/(auth)/_components/sign-out-confirm";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 

@@ -29,10 +29,10 @@ export function LessonItem({ lesson, slug, isActive, complete }: IAppProps) {
           "dark:!bg-primary/30 bg-primary/10 hover:bg-primary/10 dark:hover:bg-primary/30 !border-primary/50",
       )}
     >
-      <Link href={`/dashboard/${slug}/${lesson.id}`}>
-        <div className="flex w-full items-center justify-between gap-2.5">
-          <div className="flex-1">
-            <p className="text-muted-foreground line-clamp-1">
+      <Link href={`/dashboard/${slug}/${lesson.id}`} className="w-full">
+        <div className="flex w-full items-center gap-2.5">
+          <div className="flex min-w-0 flex-1 flex-col">
+            <p className="text-foreground/70 dark:text-muted-foreground text-wrap">
               {lesson.position}. <span className="ml-1">{lesson.title}</span>
             </p>
             {complete && (
@@ -49,7 +49,7 @@ export function LessonItem({ lesson, slug, isActive, complete }: IAppProps) {
             {complete ? (
               <IconCheck className="text-foreground size-4" />
             ) : (
-              <IconPlayerPlayFilled className="text-foreground size-4" />
+              <IconPlayerPlayFilled className="text-foreground/90 dark:text-foreground size-4" />
             )}
           </div>
         </div>
