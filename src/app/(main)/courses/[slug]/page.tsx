@@ -13,6 +13,7 @@ import { env } from "@/env";
 import {
   IconCategory,
   IconChevronDown,
+  IconChevronRight,
   IconPlayerPlay,
 } from "@tabler/icons-react";
 import {
@@ -29,6 +30,7 @@ import { checkIfCourseBougth } from "@/app/data/user/user-is-enrolled";
 import Link from "next/link";
 import { EnrollmentButton } from "./_components/EnrollmentButton";
 import { Metadata } from "next";
+import { appName } from "@/constant/app";
 
 type Params = Promise<{ slug: string }>;
 
@@ -52,9 +54,24 @@ export async function generateMetadata({
     openGraph: {
       title: course.title,
       description: course.smallDescription,
+      type: "website",
+      siteName: appName,
       images: [
         {
           url: `https://${process.env.NEXT_PUBLIC_S3_BUCKET_NAME_IMAGES}.fly.storage.tigris.dev/${course.fileKey}`,
+          width: 1200,
+          height: 675,
+          alt: course.title,
+        },
+      ],
+    },
+    twitter: {
+      images: [
+        {
+          url: `https://${process.env.NEXT_PUBLIC_S3_BUCKET_NAME_IMAGES}.fly.storage.tigris.dev/${course.fileKey}`,
+          width: 1200,
+          height: 675,
+          alt: course.title,
         },
       ],
     },
@@ -148,17 +165,19 @@ export default async function SlugPage({ params }: { params: Params }) {
               {course.chapter.map((chapter, index) => (
                 <Collapsible key={chapter.id} defaultOpen={index === 0}>
                   <Card className="gap-0 overflow-hidden rounded-sm p-0">
-                    <CollapsibleTrigger className="cursor-pointer">
+                    <CollapsibleTrigger className="group cursor-pointer">
                       <div>
                         <CardContent className="hover:bg-muted/50 px-3 py-2 transition-colors md:px-4 md:py-3">
                           <div className="flex items-center justify-between">
                             <div className="flex items-center gap-4">
-                              <p className="bg-primary/50 flex size-9 items-center justify-center rounded-full">
+                              <p className="bg-primary/50 flex size-8 shrink-0 items-center justify-center rounded-full sm:size-9">
                                 {index + 1}
                               </p>
                               <div className="text-left">
-                                <h3>{chapter.title}</h3>
-                                <p className="text-muted-foreground">
+                                <h3 className="text-sm sm:text-base">
+                                  {chapter.title}
+                                </h3>
+                                <p className="text-muted-foreground text-sm">
                                   {chapter.lessons.length} lesson
                                   {chapter.lessons.length > 1 && "s"}
                                 </p>
@@ -173,7 +192,7 @@ export default async function SlugPage({ params }: { params: Params }) {
                                 {chapter.lessons.length} lesson
                                 {chapter.lessons.length > 1 && "s"}
                               </Badge>
-                              <IconChevronDown className="size-5" />
+                              <IconChevronRight className="size-5 group-data-[state=open]:rotate-90" />
                             </div>
                           </div>
                         </CardContent>
@@ -217,7 +236,7 @@ export default async function SlugPage({ params }: { params: Params }) {
               {/* Price Section */}
               <div className="flex items-baseline justify-between">
                 <span className="text-lg font-medium">Price</span>
-                <span className="text-primary text-2xl font-bold">
+                <span className="text-xl font-bold">
                   {new Intl.NumberFormat("en-IN", {
                     style: "currency",
                     currency: "INR",
@@ -315,7 +334,7 @@ export default async function SlugPage({ params }: { params: Params }) {
 
               {isEnrolled ? (
                 <Button asChild className="w-full">
-                  <Link href={``}>
+                  <Link href={`/dashboard/${course.slug}`}>
                     Watch now <ArrowRightIcon />
                   </Link>
                 </Button>

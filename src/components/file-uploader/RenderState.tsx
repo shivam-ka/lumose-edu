@@ -11,7 +11,13 @@ import { Button } from "../ui/button";
 import LoadingScreen from "../loading-screen";
 import { motion } from "motion/react";
 
-export function RenderEmptyState({ isDragActive }: { isDragActive: boolean }) {
+export function RenderEmptyState({
+  isDragActive,
+  fileType,
+}: {
+  isDragActive: boolean;
+  fileType: "image" | "video";
+}) {
   if (isDragActive) {
     return (
       <>
@@ -36,7 +42,7 @@ export function RenderEmptyState({ isDragActive }: { isDragActive: boolean }) {
           or click to select files
         </p>
       </div>
-      <p className="text-muted-foreground text-xs">Max Size: 5MB</p>
+      <p className="text-muted-foreground text-xs">Max Size: {fileType === "image" ? "5MB" : "5GB"}</p>
     </>
   );
 }

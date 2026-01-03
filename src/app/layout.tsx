@@ -3,16 +3,10 @@ import "./globals.css";
 import { fontVariables } from "@/config/fonts";
 import { ThemeProvider } from "@/components/theme-provider";
 import { Toaster } from "@/components/ui/sonner";
-import { appName } from "@/constant/app";
+import { metaData } from "@/constant/app";
 import TopLoader from "@/components/top-loader";
 
-export const metadata: Metadata = {
-  title: {
-    default: `${appName} - Your online learning platform`,
-    template: `%s - ${appName}`,
-  },
-  description: `${appName} - Your online learning platform for growth and skill development.`,
-};
+export const metadata: Metadata = metaData;
 
 export default function RootLayout({
   children,

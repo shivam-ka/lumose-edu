@@ -312,7 +312,12 @@ export function Uploader({
       );
     }
 
-    return <RenderEmptyState isDragActive={isDragActive} />;
+    return (
+      <RenderEmptyState
+        isDragActive={isDragActive}
+        fileType={fileState.fileType}
+      />
+    );
   }
 
   return (

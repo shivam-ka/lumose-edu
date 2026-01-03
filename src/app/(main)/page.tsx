@@ -41,7 +41,7 @@ export default function Home() {
             </Button>
           </div>
         </div>
-        <div className="from-background absolute right-0 bottom-0 h-10 w-full bg-gradient-to-t to-transparent" />
+        <div className="from-background absolute right-0 bottom-0 h-30 w-full bg-gradient-to-t via-transparent to-transparent" />
       </section>
     </>
   );

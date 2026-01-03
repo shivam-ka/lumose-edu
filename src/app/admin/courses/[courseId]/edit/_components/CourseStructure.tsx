@@ -335,7 +335,7 @@ export function CourseStructure({ data }: IAppProps) {
                             </Button>
                           </CollapsibleTrigger>
 
-                          <p className="p-2">{item.title}</p>
+                          <p className="text-xs sm:text-base p-2">{item.title}</p>
                         </div>
 
                         <DeleteChapter chapterId={item.id} courseId={data.id} />
@@ -356,7 +356,7 @@ export function CourseStructure({ data }: IAppProps) {
                                 {(lessonListeners) => (
                                   <div
                                     key={lesson.id}
-                                    className="hover:bg-secondary flex items-center justify-between border-b px-3 py-2"
+                                    className="hover:bg-secondary flex items-center justify-between border-b px-2 py-2 sm:px-3"
                                   >
                                     <div className="flex items-center gap-2">
                                       <Button
@@ -370,6 +370,7 @@ export function CourseStructure({ data }: IAppProps) {
                                       <FileTextIcon className="ml-3 size-4" />
                                       <Link
                                         href={`/admin/courses/${data.id}/${item.id}/${lesson.id}`}
+                                        className="text-xs sm:text-base text-wrap"
                                       >
                                         {lesson.title}
                                       </Link>

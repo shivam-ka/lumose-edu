@@ -67,9 +67,12 @@ export function CourseSidebar({ course }: IAppProps) {
         {course.chapter.map((chapter, index) => (
           <Collapsible key={chapter.id} defaultOpen={index === 0}>
             <CollapsibleTrigger asChild>
-              <Button variant="outline" className="h-auto w-full rounded-sm">
+              <Button
+                variant="outline"
+                className="group h-auto w-full rounded-sm px-3 sm:px-4"
+              >
                 <div>
-                  <IconChevronRight className="size-4" />
+                  <IconChevronRight className="size-4 group-data-[state=open]:rotate-90" />
                 </div>
                 <div className="ml-1 min-w-0 flex-1 text-left">
                   <p className="text-wrap">
@@ -119,7 +122,7 @@ export function RenderSidebar({ course }: { course: CourseSidebarDataType }) {
             <ChevronsRightIcon className="size-5" />
           </Button>
         </SheetTrigger>
-        <SheetContent side="left">
+        <SheetContent side="left" className="min-w-[300px] overflow-scroll">
           <SheetTitle></SheetTitle>
           <div className="w-full min-w-[250px] shrink-0 py-5 pl-4">
             <CourseSidebar course={course} />
