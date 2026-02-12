@@ -12,7 +12,6 @@ import { Separator } from "@/components/ui/separator";
 import { env } from "@/env";
 import {
   IconCategory,
-  IconChevronDown,
   IconChevronRight,
   IconPlayerPlay,
 } from "@tabler/icons-react";
