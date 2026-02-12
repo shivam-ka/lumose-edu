@@ -8,6 +8,9 @@ export const metaData: Metadata = {
     template: `%s - ${appName}`,
   },
   description: `${appName} - Your online learning platform for growth and skill development.`,
+  verification: {
+    google: "crNhon9-eH9xYD-2jCMWzvfXQCdXHGMucNJ4ZJoFvTc",
+  },
   robots: {
     index: true,
     follow: true,

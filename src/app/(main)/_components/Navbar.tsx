@@ -5,11 +5,9 @@ import UserDropdown from "./user-dropdown";
 import { getServerSession } from "@/lib/get-sesstion";
 import { Button } from "@/components/ui/button";
 import { appName } from "@/constant/app";
+import { Suspense } from "react";
 
 export default async function Navbar() {
-  const session = await getServerSession();
-  const user = session?.user;
-
   return (
     <header className="bg-background/80 sticky top-0 z-50 flex items-center justify-between border-b border-b-neutral-600 px-2 py-4 backdrop-blur-md 2xl:px-20">
       <Link href="/" className="flex items-center gap-2">
@@ -25,13 +23,9 @@ export default async function Navbar() {
       </Link>
 
       <div className="flex items-center gap-3">
-        {user ? (
-          <UserDropdown user={user} />
-        ) : (
-          <Button size="sm" asChild>
-            <Link href="/sign-up">Create Account</Link>
-          </Button>
-        )}
+        <Suspense>
+          <RenderUser />
+        </Suspense>
 
         <ThemeToggleButton
           className="size-7"
@@ -41,4 +35,19 @@ export default async function Navbar() {
       </div>
     </header>
   );
+}
+
+async function RenderUser() {
+  const session = await getServerSession();
+  const user = session?.user;
+
+  if (!user) {
+    return (
+      <Button size="sm" asChild>
+        <Link href="/sign-up">Create Account</Link>
+      </Button>
+    );
+  }
+
+  return <UserDropdown user={user} />;
 }

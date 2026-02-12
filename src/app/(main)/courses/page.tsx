@@ -12,14 +12,14 @@ export const metadata: Metadata = {
     "Explore top-quality courses crafted to boost your skills and learning journey.",
 };
 
-export const dynamic = "force-dynamic"
+export const dynamic = "force-dynamic";
 
 export default function PublicCoursePage() {
   return (
     <div className="px-4 py-4 md:px-12 md:py-5">
       <h1 className="text-3xl font-bold md:text-4xl">Browse Courses</h1>
 
-      <p className="text-muted-foreground mt-3 max-w-xl md:text-lg">
+      <p className="text-muted-foreground mt-2 max-w-xl text-sm md:text-lg">
         Discover curated courses designed to help you learn faster, grow
         smarter, and achieve your goals.
       </p>

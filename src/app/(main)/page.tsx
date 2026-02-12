@@ -2,11 +2,17 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { GraduationCapIcon, LockKeyholeOpenIcon } from "lucide-react";
 import Link from "next/link";
+import { Suspense } from "react";
+import {
+  PublicCourseCard,
+  PublicCourseCardSkeleton,
+} from "./_components/PublicCourseCard";
+import { getLatestCourses } from "../data/course/get-all-courses";
 
 export default function Home() {
   return (
     <>
-      <section className="from-background to-muted relative flex min-h-[90vh] flex-col items-center justify-center bg-gradient-to-b px-4 text-center md:px-12 lg:px-24">
+      <section className="from-background to-muted/60 relative flex min-h-[90vh] flex-col items-center justify-center bg-gradient-to-b px-4 text-center md:px-12 lg:px-24">
         <div className="max-w-3xl space-y-6">
           <Badge
             variant="secondary"
@@ -41,8 +47,29 @@ export default function Home() {
             </Button>
           </div>
         </div>
-        <div className="from-background absolute right-0 bottom-0 h-30 w-full bg-gradient-to-t via-transparent to-transparent" />
       </section>
+      <div className="from-background to-muted/60 bg-gradient-to-t px-4 py-4 md:px-12 md:py-5">
+        <h2 className="text-3xl font-bold md:text-4xl">Newest Courses</h2>
+        <p className="text-muted-foreground mt-2 max-w-xl text-sm md:text-lg">
+          Explore our most recent courses, carefully crafted to keep your skills
+          up to date.
+        </p>
+
+        <Suspense fallback={<PublicCourseCardSkeleton />}>
+          <RenderCourse />
+        </Suspense>
+      </div>
     </>
+  );
+}
+
+async function RenderCourse() {
+  const courses = await getLatestCourses();
+  return (
+    <div className="grid grid-cols-1 gap-5 py-5 md:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4">
+      {courses.map((course) => (
+        <PublicCourseCard key={course.id} data={course} />
+      ))}
+    </div>
   );
 }
